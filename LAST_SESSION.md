@@ -60,6 +60,14 @@
 - Step 7 invariant checks: strict payment grep found no executable matches; table scan found no source matches.
 - Step 7 Debug Sweep: fixed JSX spacing in Pay notice copy; files touched: `lib/use-cart.ts`, `src/app/globals.css`, `src/app/menu/page.tsx`, `src/components/cart/*`, `src/components/menu/MenuClient.tsx`, `src/components/menu/MenuItem.tsx`, `src/components/menu/MenuSection.tsx`, `src/components/menu/menu.module.css`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 7 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0.
+- Step 8: added `/admin/qr` as a dynamic server route bound to `MENU_URL` with fallback `https://soleauae.com/menu`.
+- Step 8: added `src/components/admin/` with `QrStudioHeader`, `QrControls`, `QrCard`, `QrActions`, and `useQrCodes`.
+- Step 8: Generate creates one bare QR client-side using `qrcode`, Ink on white, error correction level M; Clear empties the preview.
+- Step 8: production `/admin/qr` browser check confirmed the address field is read-only, Generate renders a bare QR on a white tile, Clear restores the empty state, and the Lemon Rind tick is present.
+- Step 8 verification: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run format` exit 0.
+- Step 8 invariant checks: no table logic and no payment SDK/route/charge source matches.
+- Step 8 Debug Sweep: fixed lint warning by using `next/image` for the QR data URL and made `/admin/qr` dynamic for runtime `MENU_URL`; files touched: `src/app/admin/qr/page.tsx`, `src/components/admin/*`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 8 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

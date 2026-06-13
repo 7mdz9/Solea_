@@ -46,6 +46,8 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Client-only cart state is implemented in `lib/use-cart.ts`.
 - Cart UI components are stored in `src/components/cart/`.
 - `/menu` mounts the cart through `src/components/menu/MenuClient.tsx`; Pay is inert and only reveals the online payment coming soon notice.
+- Admin QR page is implemented at `src/app/admin/qr/page.tsx`; it reads `MENU_URL` server-side and serves the production menu address as read-only.
+- Admin QR components are stored in `src/components/admin/` and generate a single bare QR client-side with `qrcode`.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
 - Playwright is configured in `playwright.config.ts` with a request-only smoke test in `e2e/home.spec.ts`.
 - Prettier is configured with `.prettierrc.json`; verbatim reference HTML, token CSS, bridge state files, and generated test output are ignored by `.prettierignore`.
@@ -58,11 +60,13 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 5 reflected: menu types, verbatim menu content/prices, and repository access are in place with a unit test covering 2 categories and 8 items.
 - Step 6 reflected: `/menu` renders the public menu page from `getMenu()` without cart/payment controls, and `/` redirects to `/menu`.
 - Step 7 reflected: `/menu` includes the client-only cart, sticky order bar, cart drawer, item steppers, Remove controls, subtotal math, and inert Pay button.
+- Step 8 reflected: `/admin/qr` renders the Solea Menu QR Studio with menu-address controls, Generate, Clear, empty/feedback states, and a bare QR preview.
 
 ## Key File Map
-- App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`
+- App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`, `src/app/admin/qr/page.tsx`
 - Menu components: `src/components/menu/Masthead.tsx`, `src/components/menu/MenuClient.tsx`, `src/components/menu/MenuSection.tsx`, `src/components/menu/MenuItem.tsx`, `src/components/menu/MenuFooter.tsx`, `src/components/menu/money.ts`, `src/components/menu/menu.module.css`
 - Cart components: `src/components/cart/AddToCart.tsx`, `src/components/cart/QtyStepper.tsx`, `src/components/cart/CartBar.tsx`, `src/components/cart/CartDrawer.tsx`, `src/components/cart/PayButton.tsx`, `src/components/cart/cart.module.css`
+- Admin QR components: `src/components/admin/QrStudio.tsx`, `src/components/admin/QrStudioHeader.tsx`, `src/components/admin/QrControls.tsx`, `src/components/admin/QrCard.tsx`, `src/components/admin/QrActions.tsx`, `src/components/admin/useQrCodes.ts`, `src/components/admin/admin-qr.module.css`
 - Global styles: `src/app/globals.css`
 - Brand tokens: `styles/tokens.css`, `tailwind.config.ts`
 - Menu source: `types/menu.ts`, `data/menu.ts`, `lib/menu-repository.ts`, `lib/use-cart.ts`
@@ -72,15 +76,18 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Bridge state: `PROJECT_STATE.md`, `LAST_SESSION.md`
 
 ## Latest Verification
-- Steps 1-7 are reflected in this file.
+- Steps 1-8 are reflected in this file.
 - No table logic found in app source/config: no table IDs, table routes, `?table=` query parameter, Table data model, or per-table QR logic.
 - No payment SDK, payment route, checkout/charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
 - Public menu page verification: `/menu` renders masthead, SAVORY and SWEET sections, all 8 items with prices/descriptions, empty control mount points, two columns at desktop width, one column at mobile width, and Terracotta item numbers. `/` redirects to `/menu`.
 - Step 7 browser verification: adding items updates the sticky order bar and subtotal; item and drawer steppers work; decrementing to zero removes an item; Remove works; drawer opens/closes by View order, Escape, and overlay; mobile drawer fills the viewport; Pay reveals the online payment coming soon notice with no URL change and no network request.
+- Step 8 browser verification: production `/admin/qr` serves the menu-address field read-only with `https://soleauae.com/menu`; Generate renders one bare QR image on a white tile with no card text/label/URL; Clear empties the preview; the Lemon Rind header tick renders correctly.
 - `npm run build` exit 0, `npm run typecheck` exit 0, and `npm run lint` exit 0.
 - Step 5 menu repository test: `npm test` exit 0.
 - Step 7 invariant grep: `rg -n "stripe|checkout|/api/payments|charge\(" src\app src\components lib` exit 1 with no matches.
+- Step 8 invariant scan: `rg -n "table|\?table|Table|stripe|/api/payments|charge\(" src\app src\components lib data types` exit 1 with no matches.
 
 ## Spec Compliance
 - menu page -> implemented
 - cart + inert payment -> implemented; Pay is inert.
+- admin QR page -> implemented; single bare QR encodes `MENU_URL` and no table logic is present.
