@@ -43,6 +43,14 @@
 - Step 5 Debug Sweep: clean; files touched: `types/menu.ts`, `data/menu.ts`, `lib/menu-repository.ts`, `lib/menu-repository.test.ts`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 5 Debug Sweep DoD: `npm run typecheck` exit 0; `npm test` exit 0.
 - Step 5 Unicode check: `data/menu.ts` contains U+2014 em dash in the tagline and U+00B7 middle dot in the footer.
+- Step 6: implemented `/menu` from `getMenu()` with `Masthead`, `MenuSection`, `MenuItem`, and `MenuFooter` components in `src/components/menu/`.
+- Step 6: changed `/` to redirect to `/menu`.
+- Step 6: menu page matches the prototype structure without cart controls; each item has an empty Step 7 control mount point.
+- Step 6 verification: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run format` exit 0.
+- Step 6 browser check: `/` returned 307 to `/menu`; `/menu` rendered masthead, both sections, all 8 items with prices/descriptions, 8 empty control mount points, Terracotta item numbers, two desktop columns, and one mobile column.
+- Step 6 drift check: no table logic and no cart/payment SDK/code found in app source/config.
+- Step 6 Debug Sweep: clean; files touched: `src/app/page.tsx`, `src/app/page.test.tsx`, `src/app/menu/page.tsx`, `src/components/menu/*`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 6 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

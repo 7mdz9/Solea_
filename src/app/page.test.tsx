@@ -1,11 +1,16 @@
-import { render } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import Home from "./page";
 
-describe("Home", () => {
-  test("renders the blank app", () => {
-    const { container } = render(<Home />);
+const redirectMock = vi.hoisted(() => vi.fn());
 
-    expect(container).toBeInTheDocument();
+vi.mock("next/navigation", () => ({
+  redirect: redirectMock,
+}));
+
+describe("Home", () => {
+  test("redirects to the menu", () => {
+    Home();
+
+    expect(redirectMock).toHaveBeenCalledWith("/menu");
   });
 });

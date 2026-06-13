@@ -40,6 +40,9 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Menu types are defined in `types/menu.ts`.
 - Menu content is stored in `data/menu.ts`; prices are AED placeholders in whole AED and production stores integer minor units.
 - Menu access goes through `lib/menu-repository.ts`; pages must use the repository rather than importing `data/menu.ts` directly.
+- Public menu page is implemented at `src/app/menu/page.tsx` using `getMenu()`.
+- Root route redirects to `/menu` from `src/app/page.tsx`.
+- Menu UI components are stored in `src/components/menu/`.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
 - Playwright is configured in `playwright.config.ts` with a request-only smoke test in `e2e/home.spec.ts`.
 - Prettier is configured with `.prettierrc.json`; verbatim reference HTML, token CSS, bridge state files, and generated test output are ignored by `.prettierignore`.
@@ -50,9 +53,11 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 3 reflected: approved brand tokens are encoded in `styles/tokens.css`, mapped into Tailwind, and fonts are loaded through `next/font`.
 - Step 4 reflected: root layout/global baseline applies the Porcelain surface, subtle warm background wash, Manrope typography baseline, and `prefers-reduced-motion` handling.
 - Step 5 reflected: menu types, verbatim menu content/prices, and repository access are in place with a unit test covering 2 categories and 8 items.
+- Step 6 reflected: `/menu` renders the public menu page from `getMenu()` without cart/payment controls, and `/` redirects to `/menu`.
 
 ## Key File Map
-- App routes: `src/app/layout.tsx`, `src/app/page.tsx`
+- App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`
+- Menu components: `src/components/menu/Masthead.tsx`, `src/components/menu/MenuSection.tsx`, `src/components/menu/MenuItem.tsx`, `src/components/menu/MenuFooter.tsx`, `src/components/menu/money.ts`, `src/components/menu/menu.module.css`
 - Global styles: `src/app/globals.css`
 - Brand tokens: `styles/tokens.css`, `tailwind.config.ts`
 - Menu source: `types/menu.ts`, `data/menu.ts`, `lib/menu-repository.ts`
@@ -62,8 +67,12 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Bridge state: `PROJECT_STATE.md`, `LAST_SESSION.md`
 
 ## Latest Verification
-- Steps 1-5 are reflected in this file.
+- Steps 1-6 are reflected in this file.
 - No table logic found in app source/config: no table IDs, table routes, `?table=` query parameter, Table data model, or per-table QR logic.
-- No payment SDK, checkout, charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
-- `npm run build` exit 0 and `npm run typecheck` exit 0.
+- No cart, payment SDK, checkout, charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
+- Public menu page verification: `/menu` renders masthead, SAVORY and SWEET sections, all 8 items with prices/descriptions, empty control mount points, two columns at desktop width, one column at mobile width, and Terracotta item numbers. `/` redirects to `/menu`.
+- `npm run build` exit 0, `npm run typecheck` exit 0, and `npm run lint` exit 0.
 - Step 5 menu repository test: `npm test` exit 0.
+
+## Spec Compliance
+- menu page -> implemented
