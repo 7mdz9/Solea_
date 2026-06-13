@@ -111,6 +111,14 @@
 - Step 12 invariant checks: no table logic and no payment SDK/route/charge source matches.
 - Step 12 Debug Sweep: clean; files touched: `src/components/admin/useQrCodes.ts`, `lib/use-cart.ts`, `src/components/menu/MenuClient.tsx`, `src/components/menu/menu.module.css`, `src/app/not-found.tsx`, `lib/use-cart.test.tsx`, `src/components/menu/MenuClient.test.tsx`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 12 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0.
+- Step 13: expanded Vitest unit coverage for exact menu copy/prices and cart add/increment/decrement/remove/subtotal behavior.
+- Step 13: added RTL coverage for `MenuItem`, `AddToCart`, `CartDrawer`, `PayButton`, and `QrStudio` validation feedback.
+- Step 13: replaced the request-only E2E smoke with production-mode Playwright coverage for `/` redirect, `/menu` item/cart/Pay flow, admin Basic Auth gate, QR generation, and PDF export.
+- Step 13: Playwright now starts `next build` + `next start` with a test-only admin password so `/admin/qr` is actually gated during E2E.
+- Step 13 verification: `npm test` exit 0; `npm run test:e2e` exit 0; `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm run format` exit 0.
+- Step 13 invariant checks: no table logic and no payment SDK/route/charge source matches.
+- Step 13 Debug Sweep: fixed test cleanup and flexible Pay notice assertion; files touched: `vitest.setup.ts`, `playwright.config.ts`, `e2e/solea.spec.ts`, `e2e/home.spec.ts`, `lib/use-cart.test.tsx`, `src/components/menu/MenuItem.test.tsx`, `src/components/cart/AddToCart.test.tsx`, `src/components/cart/CartDrawer.test.tsx`, `src/components/cart/PayButton.test.tsx`, `src/components/admin/QrStudio.test.tsx`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 13 Debug Sweep DoD: `npm test` exit 0; `npm run test:e2e` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

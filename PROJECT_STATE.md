@@ -57,7 +57,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Future commerce placeholders are types only in `types/commerce.ts`.
 - `src/app/api/README.md` reserves `/api/orders` and `/api/payments` as unbuilt; no API route handlers are present.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
-- Playwright is configured in `playwright.config.ts` with a request-only smoke test in `e2e/home.spec.ts`.
+- Playwright is configured in `playwright.config.ts` and runs production-mode E2E coverage in `e2e/solea.spec.ts`.
 - Prettier is configured with `.prettierrc.json`; verbatim reference HTML, token CSS, bridge state files, and generated test output are ignored by `.prettierignore`.
 
 ## Step Completion Snapshot
@@ -73,6 +73,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 10 reflected: production `/admin/*` uses a lightweight Basic Auth gate scoped by middleware; public menu routes remain open.
 - Step 11 reflected: future Order, OrderItem, and Payment types exist without logic; the API namespace is reserved by README only.
 - Step 12 reflected: validation and quiet error handling are in place for admin QR, empty menu, empty cart, cart quantity bounds, and not-found.
+- Step 13 reflected: automated unit, component, and E2E tests cover menu data, cart logic, menu/cart/admin components, inert Pay behavior, public routing, admin gate, and QR PDF export.
 
 ## Key File Map
 - App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`, `src/app/admin/qr/page.tsx`, `src/app/not-found.tsx`, `src/middleware.ts`
@@ -84,12 +85,12 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Menu source: `types/menu.ts`, `types/commerce.ts`, `data/menu.ts`, `lib/menu-repository.ts`, `lib/use-cart.ts`
 - Reserved API namespace: `src/app/api/README.md`
 - Tooling config: `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `eslint.config.mjs`, `vitest.config.ts`, `vitest.setup.ts`, `playwright.config.ts`, `.prettierrc.json`, `.prettierignore`, `.env.example`
-- Tests and probes: `src/app/page.test.tsx`, `src/lib/vendor-smoke.ts`, `lib/menu-repository.test.ts`, `e2e/home.spec.ts`
+- Tests and probes: `src/app/page.test.tsx`, `src/lib/vendor-smoke.ts`, `lib/menu-repository.test.ts`, `lib/use-cart.test.tsx`, `src/components/menu/MenuClient.test.tsx`, `src/components/menu/MenuItem.test.tsx`, `src/components/cart/AddToCart.test.tsx`, `src/components/cart/CartDrawer.test.tsx`, `src/components/cart/PayButton.test.tsx`, `src/components/admin/QrStudio.test.tsx`, `e2e/solea.spec.ts`
 - Approved prototypes: `reference/solea-menu-prototype.html`, `reference/solea-qr-generator-prototype.html`
 - Bridge state: `PROJECT_STATE.md`, `LAST_SESSION.md`
 
 ## Latest Verification
-- Steps 1-12 are reflected in this file.
+- Steps 1-13 are reflected in this file.
 - No table logic found in app source/config: no table IDs, table routes, `?table=` query parameter, Table data model, or per-table QR logic.
 - No payment SDK, payment route, checkout/charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
 - Verification + State Refresh: current no-table grep exit 1 with no matches; current no-payment-gateway grep exit 1 with no matches.
@@ -100,6 +101,8 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 10 browser verification: production `/` and `/menu` load without credentials; `/admin/qr` returns 401 without credentials or with a wrong password; `/admin/qr` loads with valid Basic Auth credentials.
 - Step 11 verification: `types/commerce.ts` typechecks; production `/api/orders` and `/api/payments` return 404; no API route handlers were added.
 - Step 12 verification: non-production admin QR rejects invalid URLs with in-voice feedback; empty menu and empty cart states render without crashing; cart quantities do not go negative; branded not-found page renders.
+- Step 13 verification: `npm test` runs 9 Vitest files / 12 tests; `npm run test:e2e` runs 3 Playwright tests against production `next start`.
+- Step 13 E2E coverage: `/` redirects to `/menu`; `/menu` renders both sections and all priced items; cart count/subtotal/drawer adjustment/Pay inertness pass; `/admin/qr` is blocked without credentials and PDF export downloads with credentials.
 - Verification + State Refresh: production browser check confirmed `/` and `/menu` are public, `/admin/qr` is gated, `/api/orders` is not reachable as an implemented API route, cart interactions do not trigger unexpected requests, and Pay is inert.
 - Verification + State Refresh: accent discipline confirmed; Terracotta appears on menu/cart controls and Lemon Rind appears on the admin QR tick.
 - `npm run build` exit 0, `npm run typecheck` exit 0, and `npm run lint` exit 0.
@@ -109,6 +112,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 10 env grep: `rg -n "ADMIN_PASSWORD" src\app src\components lib` exit 1 with no matches; `src/middleware.ts` reads `process.env.ADMIN_PASSWORD`.
 - Step 11 grep: `rg -n "checkout|stripe|payment intent|charge\(" src\app` exit 1 with no matches.
 - Step 12 tests: `npm test` exit 0 with cart edge-case and empty-menu coverage.
+- Step 13 DoD: `npm test` exit 0; `npm run test:e2e` exit 0.
 
 ## Spec Compliance
 - menu page -> implemented
@@ -117,6 +121,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - QR admin + export -> implemented; export/print repeat the single bare menu QR with no labels or URLs on codes.
 - admin access gate -> implemented; production `/admin/*` is protected by Basic Auth and public menu routes are not blocked.
 - validation + error handling -> implemented; invalid admin URL, empty menu, empty cart, cart quantity bounds, and not-found are covered.
+- testing -> implemented; unit, component, and E2E coverage is in place and green.
 
 ## Stubs/Mocks
 - future commerce types, not implemented: `Order`, `OrderItem`, and `Payment` in `types/commerce.ts`.

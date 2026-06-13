@@ -27,22 +27,46 @@ const menu: Menu = {
           createdAt: null,
           updatedAt: null,
         },
+        {
+          id: "tart",
+          category: "SWEET",
+          name: "Pistachio Raspberry Tart",
+          description:
+            "Graham biscuit crust, pistachio cream, raspberry confit, and fresh raspberries.",
+          price: 36,
+          availability: null,
+          image: null,
+          tags: [],
+          sortOrder: null,
+          createdAt: null,
+          updatedAt: null,
+        },
       ],
     },
   ],
 };
 
 describe("useCart", () => {
-  test("keeps subtotal correct and does not go negative", () => {
+  test("adds, increments, decrements to zero, removes, and totals lines", () => {
     const { result } = renderHook(() => useCart(menu));
 
     act(() => result.current.add("toast"));
     act(() => result.current.add("toast"));
+    act(() => result.current.add("tart"));
 
-    expect(result.current.count).toBe(2);
-    expect(result.current.subtotal).toBe(76);
+    expect(result.current.count).toBe(3);
+    expect(result.current.subtotal).toBe(112);
 
     act(() => result.current.decrement("toast"));
+
+    expect(result.current.count).toBe(2);
+    expect(result.current.subtotal).toBe(74);
+
+    act(() => result.current.remove("tart"));
+
+    expect(result.current.count).toBe(1);
+    expect(result.current.subtotal).toBe(38);
+
     act(() => result.current.decrement("toast"));
     act(() => result.current.decrement("toast"));
 
