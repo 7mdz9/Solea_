@@ -138,6 +138,19 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - production hardening -> implemented; env documentation, baseline security headers, production read-only `MENU_URL` QR encoding, and no hardcoded secret are verified.
 - deployment docs -> implemented; README covers deployment, domain handoff, existing-site branch, and QR to menu verification.
 
+## Final Compliance Audit
+- Date: 2026-06-13
+- Executor: CODEX
+- Scope: full-codebase review against approved prototypes, global invariants, routes, security gate, tests, and deployment docs.
+- Menu audit: `data/menu.ts` preserves the approved brand, tagline, title, footer, 2 categories, 8 item names, 8 descriptions, and prices verbatim; production browser verification confirmed `/menu` renders both sections, all prices, desktop two-column layout, mobile one-column layout, Terracotta item numbers/Add controls, client-only cart bar/drawer, correct subtotal, and inert Pay notice with no URL change or non-Next network request.
+- Admin QR audit: production browser verification confirmed `/admin/qr` is gated, the menu address is read-only and driven by `MENU_URL`, the Lemon Rind header tick renders, no sun-mark element is present, Generate renders a bare QR tile with no label/URL text on the code card, and the generated QR pixel matrix matches `https://soleauae.com/menu`.
+- Routing/security audit: `/` redirects to `/menu`; `/menu` is public; `/admin/qr` returns 401 without credentials and 200 with valid Basic Auth; `ADMIN_PASSWORD` and `MENU_URL` are read from env only in runtime code.
+- No-tables audit: targeted scan for table IDs, `?table=`, Table model/type/class/interface, per-table QR, and persisted QR entity patterns across app/source/config/docs returned no forbidden implementation matches.
+- Payment/order audit: targeted scan for Stripe, payment intents, charge calls, gateways, order submission helpers, and executable `/api/payments` code found no executable implementation; the only `/api/payments` hit is `src/app/api/README.md`, which states it is unbuilt. Pay remains a local state toggle only.
+- Scope audit: no login, customer account, user account, sign-in/sign-up, session, or token implementation was added; future commerce remains type-only in `types/commerce.ts`.
+- README audit: deployment docs include build/start, env vars, Vercel deploy steps, apex `soleauae.com` connection, existing-site branch, menu edits note, and QR to menu verification checklist.
+- DoD audit: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run test:e2e` exit 0. The first E2E attempt found a stale local Next listener on port 3000; it was stopped and the command then passed.
+
 ## Stubs/Mocks
 - future commerce types, not implemented: `Order`, `OrderItem`, and `Payment` in `types/commerce.ts`.
 - reserved API namespace, not implemented: `/api/orders` and `/api/payments` noted in `src/app/api/README.md`.

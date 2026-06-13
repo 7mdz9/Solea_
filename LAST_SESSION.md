@@ -132,6 +132,11 @@
 - Step 15 verification: `npm run build` exit 0.
 - Step 15 Debug Sweep: fixed README formatting; files touched: `README.md`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 15 Debug Sweep DoD: `npm run build` exit 0; `npm run format` exit 0.
+- Final Audit: reviewed prototypes, menu data, cart/admin components, middleware, API namespace, README, and source/config scans.
+- Final Audit: production browser verification confirmed `/` -> `/menu`, menu content/layout/accent, client-only cart behavior, inert Pay, `/admin/qr` gate, Lemon Rind admin accent, bare QR preview, and QR matrix matching `MENU_URL`.
+- Final Audit: no forbidden table implementation found; no payment gateway, Stripe, payment intent, charge flow, executable `/api/payments`, or order submission found; future commerce remains types-only.
+- Final Audit: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run test:e2e` exit 0 after stopping a stale local Next listener on port 3000.
+- Final Audit: appended compliance summary to `PROJECT_STATE.md`; files touched: `PROJECT_STATE.md`, `LAST_SESSION.md`.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.
