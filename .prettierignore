@@ -1,0 +1,7 @@
+.next
+node_modules
+test-results
+reference/*.html
+next-env.d.ts
+PROJECT_STATE.md
+LAST_SESSION.md
