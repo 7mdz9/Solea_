@@ -13,14 +13,16 @@ describe("PayButton", () => {
 
     render(<PayButton />);
 
-    await user.click(screen.getByRole("button", { name: "Pay" }));
+    await user.click(
+      screen.getByRole("button", { name: "Proceed to checkout" }),
+    );
 
     const notice = screen.getByRole("status");
     const noticeText = notice.textContent?.replace(/\s+/g, " ").trim();
     const expectedNotice =
-      "Online payment is coming soon. Secure checkout will be available shortly " +
+      "Online checkout is coming soon. Secure payment will be available shortly " +
       String.fromCharCode(8212) +
-      " please pay at the counter for now. Thank you.";
+      " please order at the counter for now. Thank you.";
 
     expect(notice).toBeVisible();
     expect(noticeText).toBe(expectedNotice);

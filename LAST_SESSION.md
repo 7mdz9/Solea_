@@ -138,6 +138,9 @@
 - Final Audit: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run test:e2e` exit 0 after stopping a stale local Next listener on port 3000.
 - Final Audit: appended compliance summary to `PROJECT_STATE.md`; files touched: `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - QR export/print fix: changed admin Export PDF and Print to one centered bare QR, and updated E2E expectations.
+- Cart checkout copy change: renamed the inert cart action to `Proceed to checkout` and updated the notice to `Online checkout is coming soon. Secure payment will be available shortly — please order at the counter for now. Thank you.`
+- Cart checkout copy change verification: `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run test:e2e` exit 0; old cart button/notice copy scan returned no source/test matches.
+- Cart checkout copy change invariant checks: no table logic found; payment-gateway scan found only `src/app/api/README.md` noting `/api/payments` is unbuilt.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

@@ -11,7 +11,7 @@
 - Disk is shared state. Each step reads the named files first, updates `PROJECT_STATE.md` and `LAST_SESSION.md`, then prints a HANDOFF block.
 - Git safety. Before modifying existing files, commit current state with the given message.
 - No tables. Do not create table IDs, table routes, `?table=` query parameters, a Table data model, per-table QR logic, or persisted QR code database entities. The single QR code encodes one fixed menu URL.
-- Cart is client-only. Payment is inert. The Pay button reveals the calm online payment coming soon notice and performs no transaction, no network request, and no navigation.
+- Cart is client-only. Payment is inert. The checkout button reveals the calm online checkout coming soon notice and performs no transaction, no network request, and no navigation.
 
 ## Debug Sweep Template
 DEBUG SWEEP — after Step [N]    EXECUTOR: CODEX    EFFORT: medium    MODE: VERIFY
@@ -45,7 +45,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Menu UI components are stored in `src/components/menu/`.
 - Client-only cart state is implemented in `lib/use-cart.ts`.
 - Cart UI components are stored in `src/components/cart/`.
-- `/menu` mounts the cart through `src/components/menu/MenuClient.tsx`; Pay is inert and only reveals the online payment coming soon notice.
+- `/menu` mounts the cart through `src/components/menu/MenuClient.tsx`; Proceed to checkout is inert and only reveals the online checkout coming soon notice.
 - `/menu` renders a branded empty state if the menu source has no items.
 - Admin QR page is implemented at `src/app/admin/qr/page.tsx`; it reads `MENU_URL` server-side and serves the production menu address as read-only.
 - Admin QR components are stored in `src/components/admin/` and generate a single bare QR client-side with `qrcode`.
@@ -70,13 +70,13 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 4 reflected: root layout/global baseline applies the Porcelain surface, subtle warm background wash, Manrope typography baseline, and `prefers-reduced-motion` handling.
 - Step 5 reflected: menu types, verbatim menu content/prices, and repository access are in place with a unit test covering 2 categories and 8 items.
 - Step 6 reflected: `/menu` renders the public menu page from `getMenu()` without cart/payment controls, and `/` redirects to `/menu`.
-- Step 7 reflected: `/menu` includes the client-only cart, sticky order bar, cart drawer, item steppers, Remove controls, subtotal math, and inert Pay button.
+- Step 7 reflected: `/menu` includes the client-only cart, sticky order bar, cart drawer, item steppers, Remove controls, subtotal math, and inert checkout button.
 - Step 8 reflected: `/admin/qr` renders the Solea Menu QR Studio with menu-address controls, Generate, Clear, empty/feedback states, and a bare QR preview.
 - Step 9 reflected: `/admin/qr` supports Export PDF and Print for one clean bare QR; `/menu` print hides cart chrome.
 - Step 10 reflected: production `/admin/*` uses a lightweight Basic Auth gate scoped by middleware; public menu routes remain open.
 - Step 11 reflected: future Order, OrderItem, and Payment types exist without logic; the API namespace is reserved by README only.
 - Step 12 reflected: validation and quiet error handling are in place for admin QR, empty menu, empty cart, cart quantity bounds, and not-found.
-- Step 13 reflected: automated unit, component, and E2E tests cover menu data, cart logic, menu/cart/admin components, inert Pay behavior, public routing, admin gate, and QR PDF export.
+- Step 13 reflected: automated unit, component, and E2E tests cover menu data, cart logic, menu/cart/admin components, inert checkout behavior, public routing, admin gate, and QR PDF export.
 - Step 14 reflected: production env documentation, baseline security headers, production read-only `MENU_URL` QR behavior, and non-hardcoded E2E admin password handling are in place.
 - Step 15 reflected: README deployment and domain handoff docs cover build/start, env vars, Vercel deploy, apex domain connection, existing-site branch, menu edits, and QR to menu verification.
 
@@ -101,15 +101,15 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - No payment SDK, payment route, checkout/charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
 - Verification + State Refresh: current no-table grep exit 1 with no matches; current no-payment-gateway grep exit 1 with no matches.
 - Public menu page verification: `/menu` renders masthead, SAVORY and SWEET sections, all 8 items with prices/descriptions, empty control mount points, two columns at desktop width, one column at mobile width, and Terracotta item numbers. `/` redirects to `/menu`.
-- Step 7 browser verification: adding items updates the sticky order bar and subtotal; item and drawer steppers work; decrementing to zero removes an item; Remove works; drawer opens/closes by View order, Escape, and overlay; mobile drawer fills the viewport; Pay reveals the online payment coming soon notice with no URL change and no network request.
+- Step 7 browser verification: adding items updates the sticky order bar and subtotal; item and drawer steppers work; decrementing to zero removes an item; Remove works; drawer opens/closes by View order, Escape, and overlay; mobile drawer fills the viewport; Proceed to checkout reveals the online checkout coming soon notice with no URL change and no network request.
 - Step 8 browser verification: production `/admin/qr` serves the menu-address field read-only with `https://soleauae.com/menu`; Generate renders one bare QR image on a white tile with no card text/label/URL; Clear empties the preview; the Lemon Rind header tick renders correctly.
 - Step 9 browser verification: Export PDF downloads `solea-qr-codes.pdf`; admin print media hides chrome and shows one clean bare QR; menu print media hides the cart bar, drawer, and overlay.
 - Step 10 browser verification: production `/` and `/menu` load without credentials; `/admin/qr` returns 401 without credentials or with a wrong password; `/admin/qr` loads with valid Basic Auth credentials.
 - Step 11 verification: `types/commerce.ts` typechecks; production `/api/orders` and `/api/payments` return 404; no API route handlers were added.
 - Step 12 verification: non-production admin QR rejects invalid URLs with in-voice feedback; empty menu and empty cart states render without crashing; cart quantities do not go negative; branded not-found page renders.
 - Step 13 verification: `npm test` runs 9 Vitest files / 12 tests; `npm run test:e2e` runs 3 Playwright tests against production `next start`.
-- Step 13 E2E coverage: `/` redirects to `/menu`; `/menu` renders both sections and all priced items; cart count/subtotal/drawer adjustment/Pay inertness pass; `/admin/qr` is blocked without credentials and PDF export downloads with credentials.
-- Verification + State Refresh: production browser check confirmed `/` and `/menu` are public, `/admin/qr` is gated, `/api/orders` is not reachable as an implemented API route, cart interactions do not trigger unexpected requests, and Pay is inert.
+- Step 13 E2E coverage: `/` redirects to `/menu`; `/menu` renders both sections and all priced items; cart count/subtotal/drawer adjustment/checkout inertness pass; `/admin/qr` is blocked without credentials and PDF export downloads with credentials.
+- Verification + State Refresh: production browser check confirmed `/` and `/menu` are public, `/admin/qr` is gated, `/api/orders` is not reachable as an implemented API route, cart interactions do not trigger unexpected requests, and checkout is inert.
 - Verification + State Refresh: accent discipline confirmed; Terracotta appears on menu/cart controls and Lemon Rind appears on the admin QR tick.
 - `npm run build` exit 0, `npm run typecheck` exit 0, and `npm run lint` exit 0.
 - Step 5 menu repository test: `npm test` exit 0.
@@ -122,14 +122,16 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 14 DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0.
 - Step 14 production verification: `next start` with temporary `MENU_URL` and temporary `ADMIN_PASSWORD` confirmed `/menu` status 200, `/admin/qr` status 401 without credentials, `/admin/qr` status 200 with credentials, address field read-only, baseline security headers present, and generated QR pixels match the `MENU_URL` QR matrix.
 - Step 14 hardening checks: `.env.example` documents `MENU_URL`, `ADMIN_PASSWORD`, and `NODE_ENV`; no hardcoded secret value was added; Playwright E2E now generates a test-only admin password when one is not supplied.
-- Step 14 invariant checks: no-table grep exit 1 with no matches; no-payment-gateway grep only found the existing inert Pay notice copy in tests, with no gateway, Stripe, checkout route, charge flow, or payment SDK code.
+- Step 14 invariant checks: no-table grep exit 1 with no matches; no-payment-gateway grep only found the inert checkout notice copy in tests, with no gateway, Stripe, checkout route, charge flow, or payment SDK code.
 - Step 14 E2E regression: `npm run test:e2e` exit 0.
 - Step 15 README verification: build/start, env-var table, Vercel deploy steps, apex `soleauae.com` domain connection, existing-site branch, menu-edits-need-a-developer note, and QR to menu checklist are documented.
 - Step 15 Debug Sweep DoD: `npm run build` exit 0.
+- Cart checkout copy change verification: button renders `Proceed to checkout`; clicking it reveals `Online checkout is coming soon. Secure payment will be available shortly — please order at the counter for now. Thank you.`; E2E confirms URL does not change and no non-Next request fires.
+- Cart checkout copy change DoD: `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run test:e2e` exit 0.
 
 ## Spec Compliance
 - menu page -> implemented
-- cart + inert payment -> implemented; Pay is inert.
+- cart + inert payment -> implemented; Proceed to checkout is inert.
 - admin QR page -> implemented; single bare QR encodes `MENU_URL` and no table logic is present.
 - QR admin + export -> implemented; export/print show one bare menu QR with no labels or URLs on the code.
 - admin access gate -> implemented; production `/admin/*` is protected by Basic Auth and public menu routes are not blocked.
@@ -142,15 +144,16 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Date: 2026-06-13
 - Executor: CODEX
 - Scope: full-codebase review against approved prototypes, global invariants, routes, security gate, tests, and deployment docs.
-- Menu audit: `data/menu.ts` preserves the approved brand, tagline, title, footer, 2 categories, 8 item names, 8 descriptions, and prices verbatim; production browser verification confirmed `/menu` renders both sections, all prices, desktop two-column layout, mobile one-column layout, Terracotta item numbers/Add controls, client-only cart bar/drawer, correct subtotal, and inert Pay notice with no URL change or non-Next network request.
+- Menu audit: `data/menu.ts` preserves the approved brand, tagline, title, footer, 2 categories, 8 item names, 8 descriptions, and prices verbatim; production browser verification confirmed `/menu` renders both sections, all prices, desktop two-column layout, mobile one-column layout, Terracotta item numbers/Add controls, client-only cart bar/drawer, correct subtotal, and inert checkout notice with no URL change or non-Next network request.
 - Admin QR audit: production browser verification confirmed `/admin/qr` is gated, the menu address is read-only and driven by `MENU_URL`, the Lemon Rind header tick renders, no sun-mark element is present, Generate renders a bare QR tile with no label/URL text on the code card, and the generated QR pixel matrix matches `https://soleauae.com/menu`.
 - Routing/security audit: `/` redirects to `/menu`; `/menu` is public; `/admin/qr` returns 401 without credentials and 200 with valid Basic Auth; `ADMIN_PASSWORD` and `MENU_URL` are read from env only in runtime code.
 - No-tables audit: targeted scan for table IDs, `?table=`, Table model/type/class/interface, per-table QR, and persisted QR entity patterns across app/source/config/docs returned no forbidden implementation matches.
-- Payment/order audit: targeted scan for Stripe, payment intents, charge calls, gateways, order submission helpers, and executable `/api/payments` code found no executable implementation; the only `/api/payments` hit is `src/app/api/README.md`, which states it is unbuilt. Pay remains a local state toggle only.
+- Payment/order audit: targeted scan for Stripe, payment intents, charge calls, gateways, order submission helpers, and executable `/api/payments` code found no executable implementation; the only `/api/payments` hit is `src/app/api/README.md`, which states it is unbuilt. Proceed to checkout remains a local state toggle only.
 - Scope audit: no login, customer account, user account, sign-in/sign-up, session, or token implementation was added; future commerce remains type-only in `types/commerce.ts`.
 - README audit: deployment docs include build/start, env vars, Vercel deploy steps, apex `soleauae.com` connection, existing-site branch, menu edits note, and QR to menu verification checklist.
 - DoD audit: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run test:e2e` exit 0. The first E2E attempt found a stale local Next listener on port 3000; it was stopped and the command then passed.
 - Post-audit QR export fix: Export PDF and Print now produce one centered bare QR instead of repeated copies.
+- Post-audit cart copy fix: The inert cart action now reads `Proceed to checkout` and shows checkout-framed coming soon copy without adding checkout flow behavior.
 
 ## Stubs/Mocks
 - future commerce types, not implemented: `Order`, `OrderItem`, and `Payment` in `types/commerce.ts`.

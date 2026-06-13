@@ -70,13 +70,17 @@ test("menu shows sections, all items, and inert cart flow", async ({
   const beforePayUrl = page.url();
   const requests: string[] = [];
   page.on("request", (request) => requests.push(request.url()));
-  await drawer.getByRole("button", { name: "Pay" }).click();
+  await drawer.getByRole("button", { name: "Proceed to checkout" }).click();
 
-  await expect(
-    drawer.getByText(
-      "Online payment is coming soon. Secure checkout will be available shortly — please pay at the counter for now. Thank you.",
-    ),
-  ).toBeVisible();
+  const checkoutNotice = drawer.getByRole("status");
+  await expect(checkoutNotice).toBeVisible();
+  expect(
+    (await checkoutNotice.textContent())?.replace(/\s+/g, " ").trim(),
+  ).toBe(
+    "Online checkout is coming soon. Secure payment will be available shortly " +
+      String.fromCharCode(8212) +
+      " please order at the counter for now. Thank you.",
+  );
   await page.waitForTimeout(250);
   expect(page.url()).toBe(beforePayUrl);
   expect(requests.filter((url) => !url.includes("/_next/"))).toEqual([]);

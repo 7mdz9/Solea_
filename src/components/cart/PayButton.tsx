@@ -13,15 +13,14 @@ export function PayButton() {
         onClick={() => setShowNotice(true)}
         type="button"
       >
-        Pay
+        Proceed to checkout
       </button>
       <div
         className={`${styles.payNotice} ${showNotice ? styles.show : ""}`}
         role="status"
       >
-        <strong>Online payment is coming soon.</strong> Secure check
-        {"out will be available shortly "}
-        &mdash; please pay at the counter for now. Thank you.
+        Online checkout is coming soon. Secure payment will be available shortly
+        &mdash; please order at the counter for now. Thank you.
       </div>
     </>
   );
