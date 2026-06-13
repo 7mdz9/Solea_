@@ -119,6 +119,14 @@
 - Step 13 invariant checks: no table logic and no payment SDK/route/charge source matches.
 - Step 13 Debug Sweep: fixed test cleanup and flexible Pay notice assertion; files touched: `vitest.setup.ts`, `playwright.config.ts`, `e2e/solea.spec.ts`, `e2e/home.spec.ts`, `lib/use-cart.test.tsx`, `src/components/menu/MenuItem.test.tsx`, `src/components/cart/AddToCart.test.tsx`, `src/components/cart/CartDrawer.test.tsx`, `src/components/cart/PayButton.test.tsx`, `src/components/admin/QrStudio.test.tsx`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 13 Debug Sweep DoD: `npm test` exit 0; `npm run test:e2e` exit 0.
+- Step 14: documented `MENU_URL`, `ADMIN_PASSWORD`, and `NODE_ENV` in `.env.example` with placeholder values only.
+- Step 14: added baseline security headers in `next.config.ts`: `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, and `Permissions-Policy`.
+- Step 14: removed the hardcoded Playwright admin password fallback; E2E now uses `E2E_ADMIN_PASSWORD` or a generated test-only value.
+- Step 14 production check: `next start` with temporary env confirmed `/menu` is public, `/admin/qr` is gated, the admin address field is read-only, and the generated QR pixel matrix matches the `MENU_URL` value.
+- Step 14 verification: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run test:e2e` exit 0; `npm run format` exit 0.
+- Step 14 invariant checks: no table logic found; no payment gateway, Stripe, payment intent, executable checkout route, charge flow, or payment SDK code found.
+- Step 14 Debug Sweep: clean; files touched: `.env.example`, `next.config.ts`, `playwright.config.ts`, `e2e/solea.spec.ts`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 14 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

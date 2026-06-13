@@ -1,7 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 const adminPassword =
-  process.env.E2E_ADMIN_PASSWORD ?? "playwright-admin-password";
+  process.env.E2E_ADMIN_PASSWORD ??
+  (() => {
+    throw new Error("E2E_ADMIN_PASSWORD is required for admin tests.");
+  })();
 
 const menuItems = [
   ["Truffle Mushroom Toast on Milk Bread", "AED 38"],

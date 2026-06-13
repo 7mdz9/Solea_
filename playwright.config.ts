@@ -1,7 +1,8 @@
+import { randomUUID } from "node:crypto";
 import { defineConfig } from "@playwright/test";
 
-const e2eAdminPassword =
-  process.env.E2E_ADMIN_PASSWORD ?? "playwright-admin-password";
+const e2eAdminPassword = process.env.E2E_ADMIN_PASSWORD ?? randomUUID();
+process.env.E2E_ADMIN_PASSWORD = e2eAdminPassword;
 
 export default defineConfig({
   testDir: "./e2e",

@@ -58,6 +58,8 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - `src/app/api/README.md` reserves `/api/orders` and `/api/payments` as unbuilt; no API route handlers are present.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
 - Playwright is configured in `playwright.config.ts` and runs production-mode E2E coverage in `e2e/solea.spec.ts`.
+- Production hardening is configured in `next.config.ts` with baseline security headers.
+- `.env.example` documents `MENU_URL`, `ADMIN_PASSWORD`, and `NODE_ENV` placeholders only.
 - Prettier is configured with `.prettierrc.json`; verbatim reference HTML, token CSS, bridge state files, and generated test output are ignored by `.prettierignore`.
 
 ## Step Completion Snapshot
@@ -74,6 +76,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 11 reflected: future Order, OrderItem, and Payment types exist without logic; the API namespace is reserved by README only.
 - Step 12 reflected: validation and quiet error handling are in place for admin QR, empty menu, empty cart, cart quantity bounds, and not-found.
 - Step 13 reflected: automated unit, component, and E2E tests cover menu data, cart logic, menu/cart/admin components, inert Pay behavior, public routing, admin gate, and QR PDF export.
+- Step 14 reflected: production env documentation, baseline security headers, production read-only `MENU_URL` QR behavior, and non-hardcoded E2E admin password handling are in place.
 
 ## Key File Map
 - App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`, `src/app/admin/qr/page.tsx`, `src/app/not-found.tsx`, `src/middleware.ts`
@@ -113,6 +116,11 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 11 grep: `rg -n "checkout|stripe|payment intent|charge\(" src\app` exit 1 with no matches.
 - Step 12 tests: `npm test` exit 0 with cart edge-case and empty-menu coverage.
 - Step 13 DoD: `npm test` exit 0; `npm run test:e2e` exit 0.
+- Step 14 DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0.
+- Step 14 production verification: `next start` with temporary `MENU_URL` and temporary `ADMIN_PASSWORD` confirmed `/menu` status 200, `/admin/qr` status 401 without credentials, `/admin/qr` status 200 with credentials, address field read-only, baseline security headers present, and generated QR pixels match the `MENU_URL` QR matrix.
+- Step 14 hardening checks: `.env.example` documents `MENU_URL`, `ADMIN_PASSWORD`, and `NODE_ENV`; no hardcoded secret value was added; Playwright E2E now generates a test-only admin password when one is not supplied.
+- Step 14 invariant checks: no-table grep exit 1 with no matches; no-payment-gateway grep only found the existing inert Pay notice copy in tests, with no gateway, Stripe, checkout route, charge flow, or payment SDK code.
+- Step 14 E2E regression: `npm run test:e2e` exit 0.
 
 ## Spec Compliance
 - menu page -> implemented
@@ -122,6 +130,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - admin access gate -> implemented; production `/admin/*` is protected by Basic Auth and public menu routes are not blocked.
 - validation + error handling -> implemented; invalid admin URL, empty menu, empty cart, cart quantity bounds, and not-found are covered.
 - testing -> implemented; unit, component, and E2E coverage is in place and green.
+- production hardening -> implemented; env documentation, baseline security headers, production read-only `MENU_URL` QR encoding, and no hardcoded secret are verified.
 
 ## Stubs/Mocks
 - future commerce types, not implemented: `Order`, `OrderItem`, and `Payment` in `types/commerce.ts`.
