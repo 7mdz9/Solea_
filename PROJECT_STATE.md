@@ -37,6 +37,9 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Accent discipline: Lemon Rind = admin (QR) screen; Terracotta = menu screen (item numbers + Add to cart).
 - Root layout/global baseline applies Manrope, Porcelain surface, subtle warm background wash, global text rendering, and `prefers-reduced-motion` handling in `src/app/globals.css`.
 - `qrcode` and `jspdf` imports are checked in `src/lib/vendor-smoke.ts`.
+- Menu types are defined in `types/menu.ts`.
+- Menu content is stored in `data/menu.ts`; prices are AED placeholders in whole AED and production stores integer minor units.
+- Menu access goes through `lib/menu-repository.ts`; pages must use the repository rather than importing `data/menu.ts` directly.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
 - Playwright is configured in `playwright.config.ts` with a request-only smoke test in `e2e/home.spec.ts`.
 - Prettier is configured with `.prettierrc.json`; verbatim reference HTML, token CSS, bridge state files, and generated test output are ignored by `.prettierignore`.
@@ -46,18 +49,21 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 2 reflected: Tailwind CSS, `next/font`, `qrcode`, `jspdf`, Vitest + React Testing Library, Playwright, and Prettier are installed and configured.
 - Step 3 reflected: approved brand tokens are encoded in `styles/tokens.css`, mapped into Tailwind, and fonts are loaded through `next/font`.
 - Step 4 reflected: root layout/global baseline applies the Porcelain surface, subtle warm background wash, Manrope typography baseline, and `prefers-reduced-motion` handling.
+- Step 5 reflected: menu types, verbatim menu content/prices, and repository access are in place with a unit test covering 2 categories and 8 items.
 
 ## Key File Map
 - App routes: `src/app/layout.tsx`, `src/app/page.tsx`
 - Global styles: `src/app/globals.css`
 - Brand tokens: `styles/tokens.css`, `tailwind.config.ts`
+- Menu source: `types/menu.ts`, `data/menu.ts`, `lib/menu-repository.ts`
 - Tooling config: `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `eslint.config.mjs`, `vitest.config.ts`, `vitest.setup.ts`, `playwright.config.ts`, `.prettierrc.json`, `.prettierignore`
-- Tests and probes: `src/app/page.test.tsx`, `src/lib/vendor-smoke.ts`, `e2e/home.spec.ts`
+- Tests and probes: `src/app/page.test.tsx`, `src/lib/vendor-smoke.ts`, `lib/menu-repository.test.ts`, `e2e/home.spec.ts`
 - Approved prototypes: `reference/solea-menu-prototype.html`, `reference/solea-qr-generator-prototype.html`
 - Bridge state: `PROJECT_STATE.md`, `LAST_SESSION.md`
 
 ## Latest Verification
-- Steps 1-4 are reflected in this file.
+- Steps 1-5 are reflected in this file.
 - No table logic found in app source/config: no table IDs, table routes, `?table=` query parameter, Table data model, or per-table QR logic.
 - No payment SDK, checkout, charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
 - `npm run build` exit 0 and `npm run typecheck` exit 0.
+- Step 5 menu repository test: `npm test` exit 0.

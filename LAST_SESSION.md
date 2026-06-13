@@ -35,6 +35,14 @@
 - Verification + State Refresh: confirmed `reference/solea-menu-prototype.html` and `reference/solea-qr-generator-prototype.html` exist; legacy `refrence/` path is absent.
 - Verification + State Refresh: no table logic found in app source/config; no payment SDK, checkout, charge flow, DB, Prisma, or Supabase package installed or referenced in app source/config.
 - Verification + State Refresh DoD: `npm run build` exit 0; `npm run typecheck` exit 0.
+- Step 5: added `types/menu.ts`, `data/menu.ts`, and `lib/menu-repository.ts` as the menu source of truth and repository interface.
+- Step 5: menu content, descriptions, prices, brand, tagline, title, and footer are copied verbatim into `data/menu.ts`.
+- Step 5: documented that prices are AED placeholders in whole AED and production stores integer minor units.
+- Step 5: added `lib/menu-repository.test.ts` asserting `getMenu()` returns 2 categories, 8 items, and exact names/descriptions/prices.
+- Step 5 verification: `npm run typecheck` exit 0; `npm test` exit 0; `npm run format` exit 0.
+- Step 5 Debug Sweep: clean; files touched: `types/menu.ts`, `data/menu.ts`, `lib/menu-repository.ts`, `lib/menu-repository.test.ts`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 5 Debug Sweep DoD: `npm run typecheck` exit 0; `npm test` exit 0.
+- Step 5 Unicode check: `data/menu.ts` contains U+2014 em dash in the tagline and U+00B7 middle dot in the footer.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.
