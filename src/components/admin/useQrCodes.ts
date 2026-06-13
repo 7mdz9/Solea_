@@ -96,32 +96,14 @@ export function useQrCodes(initialMenuUrl: string) {
     }
     const pageWidth = 210;
     const pageHeight = 297;
-    const margin = 16;
-    const gutter = 8;
-    const columns = 3;
-    const rows = 4;
-    const copies = columns * rows;
-    const cellWidth =
-      (pageWidth - margin * 2 - gutter * (columns - 1)) / columns;
-    const cellHeight = (pageHeight - margin * 2 - gutter * (rows - 1)) / rows;
-    const qrSize = Math.min(cellWidth, cellHeight) - 8;
+    const qrSize = 86;
+    const qrX = (pageWidth - qrSize) / 2;
+    const qrY = (pageHeight - qrSize) / 2;
 
-    for (let index = 0; index < copies; index += 1) {
-      const row = Math.floor(index / columns);
-      const column = index % columns;
-      const x = margin + column * (cellWidth + gutter);
-      const y = margin + row * (cellHeight + gutter);
-      const qrX = x + (cellWidth - qrSize) / 2;
-      const qrY = y + (cellHeight - qrSize) / 2;
-
-      doc.setDrawColor(225, 216, 200);
-      doc.setLineWidth(0.2);
-      doc.rect(x, y, cellWidth, cellHeight);
-      doc.addImage(dataUrl, "PNG", qrX, qrY, qrSize, qrSize);
-    }
+    doc.addImage(dataUrl, "PNG", qrX, qrY, qrSize, qrSize);
 
     doc.save("solea-qr-codes.pdf");
-    setFeedback("Exported 12 copies to PDF.");
+    setFeedback("Exported code to PDF.");
     setIsError(false);
   };
 

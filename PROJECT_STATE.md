@@ -50,7 +50,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Admin QR page is implemented at `src/app/admin/qr/page.tsx`; it reads `MENU_URL` server-side and serves the production menu address as read-only.
 - Admin QR components are stored in `src/components/admin/` and generate a single bare QR client-side with `qrcode`.
 - Admin QR URL input is validated outside production and QR/PDF generation failures return quiet feedback.
-- Admin QR export uses `jspdf` to download 12 repeated copies of the single menu QR on one A4 sheet with faint cut guides.
+- Admin QR export uses `jspdf` to download one centered bare menu QR on one A4 page.
 - Production `/admin/*` routes are protected by Basic Auth middleware using `ADMIN_PASSWORD` from the environment.
 - Public routes `/` and `/menu` remain outside the admin gate.
 - Branded not-found page is implemented at `src/app/not-found.tsx`.
@@ -72,7 +72,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 6 reflected: `/menu` renders the public menu page from `getMenu()` without cart/payment controls, and `/` redirects to `/menu`.
 - Step 7 reflected: `/menu` includes the client-only cart, sticky order bar, cart drawer, item steppers, Remove controls, subtotal math, and inert Pay button.
 - Step 8 reflected: `/admin/qr` renders the Solea Menu QR Studio with menu-address controls, Generate, Clear, empty/feedback states, and a bare QR preview.
-- Step 9 reflected: `/admin/qr` supports Export PDF and Print for a clean 12-copy QR sheet; `/menu` print hides cart chrome.
+- Step 9 reflected: `/admin/qr` supports Export PDF and Print for one clean bare QR; `/menu` print hides cart chrome.
 - Step 10 reflected: production `/admin/*` uses a lightweight Basic Auth gate scoped by middleware; public menu routes remain open.
 - Step 11 reflected: future Order, OrderItem, and Payment types exist without logic; the API namespace is reserved by README only.
 - Step 12 reflected: validation and quiet error handling are in place for admin QR, empty menu, empty cart, cart quantity bounds, and not-found.
@@ -103,7 +103,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Public menu page verification: `/menu` renders masthead, SAVORY and SWEET sections, all 8 items with prices/descriptions, empty control mount points, two columns at desktop width, one column at mobile width, and Terracotta item numbers. `/` redirects to `/menu`.
 - Step 7 browser verification: adding items updates the sticky order bar and subtotal; item and drawer steppers work; decrementing to zero removes an item; Remove works; drawer opens/closes by View order, Escape, and overlay; mobile drawer fills the viewport; Pay reveals the online payment coming soon notice with no URL change and no network request.
 - Step 8 browser verification: production `/admin/qr` serves the menu-address field read-only with `https://soleauae.com/menu`; Generate renders one bare QR image on a white tile with no card text/label/URL; Clear empties the preview; the Lemon Rind header tick renders correctly.
-- Step 9 browser verification: Export PDF downloads `solea-qr-codes.pdf` containing repeated QR copies; admin print media hides chrome and shows 12 clean QR cells; menu print media hides the cart bar, drawer, and overlay.
+- Step 9 browser verification: Export PDF downloads `solea-qr-codes.pdf`; admin print media hides chrome and shows one clean bare QR; menu print media hides the cart bar, drawer, and overlay.
 - Step 10 browser verification: production `/` and `/menu` load without credentials; `/admin/qr` returns 401 without credentials or with a wrong password; `/admin/qr` loads with valid Basic Auth credentials.
 - Step 11 verification: `types/commerce.ts` typechecks; production `/api/orders` and `/api/payments` return 404; no API route handlers were added.
 - Step 12 verification: non-production admin QR rejects invalid URLs with in-voice feedback; empty menu and empty cart states render without crashing; cart quantities do not go negative; branded not-found page renders.
@@ -131,7 +131,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - menu page -> implemented
 - cart + inert payment -> implemented; Pay is inert.
 - admin QR page -> implemented; single bare QR encodes `MENU_URL` and no table logic is present.
-- QR admin + export -> implemented; export/print repeat the single bare menu QR with no labels or URLs on codes.
+- QR admin + export -> implemented; export/print show one bare menu QR with no labels or URLs on the code.
 - admin access gate -> implemented; production `/admin/*` is protected by Basic Auth and public menu routes are not blocked.
 - validation + error handling -> implemented; invalid admin URL, empty menu, empty cart, cart quantity bounds, and not-found are covered.
 - testing -> implemented; unit, component, and E2E coverage is in place and green.
@@ -150,6 +150,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Scope audit: no login, customer account, user account, sign-in/sign-up, session, or token implementation was added; future commerce remains type-only in `types/commerce.ts`.
 - README audit: deployment docs include build/start, env vars, Vercel deploy steps, apex `soleauae.com` connection, existing-site branch, menu edits note, and QR to menu verification checklist.
 - DoD audit: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run test:e2e` exit 0. The first E2E attempt found a stale local Next listener on port 3000; it was stopped and the command then passed.
+- Post-audit QR export fix: Export PDF and Print now produce one centered bare QR instead of repeated copies.
 
 ## Stubs/Mocks
 - future commerce types, not implemented: `Order`, `OrderItem`, and `Payment` in `types/commerce.ts`.

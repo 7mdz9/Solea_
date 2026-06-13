@@ -69,9 +69,9 @@
 - Step 8 Debug Sweep: fixed lint warning by using `next/image` for the QR data URL and made `/admin/qr` dynamic for runtime `MENU_URL`; files touched: `src/app/admin/qr/page.tsx`, `src/components/admin/*`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 8 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0.
 - Step 9: added Export PDF and Print actions to the admin QR screen.
-- Step 9: Export PDF uses `jspdf` to place 12 repeated copies of the single menu QR in a 3x4 A4 grid with faint cut guides and no labels or URLs on cells.
-- Step 9: admin print media hides chrome and prints the same clean 12-copy QR sheet; menu print media hides the cart bar, drawer, and overlay.
-- Step 9 browser check: PDF download produced `solea-qr-codes.pdf`; print media exposed 12 QR cells and hid admin chrome; menu print hid cart chrome.
+- Step 9: Export PDF uses `jspdf` to place the single menu QR on one A4 page with no label or URL on the code.
+- Step 9: admin print media hides chrome and prints one clean QR; menu print media hides the cart bar, drawer, and overlay.
+- Step 9 browser check: PDF download produced `solea-qr-codes.pdf`; print media exposed one QR and hid admin chrome; menu print hid cart chrome.
 - Step 9 verification: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm run format` exit 0.
 - Step 9 invariant checks: no table logic and no payment SDK/route/charge source matches.
 - Step 9 Debug Sweep: clean after rerunning `npm run typecheck` by itself because the first parallel sweep raced with `.next` generation; files touched: `src/components/admin/QrActions.tsx`, `src/components/admin/QrStudio.tsx`, `src/components/admin/admin-qr.module.css`, `src/components/admin/useQrCodes.ts`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
@@ -137,6 +137,7 @@
 - Final Audit: no forbidden table implementation found; no payment gateway, Stripe, payment intent, charge flow, executable `/api/payments`, or order submission found; future commerce remains types-only.
 - Final Audit: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run test:e2e` exit 0 after stopping a stale local Next listener on port 3000.
 - Final Audit: appended compliance summary to `PROJECT_STATE.md`; files touched: `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- QR export/print fix: changed admin Export PDF and Print to one centered bare QR, and updated E2E expectations.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

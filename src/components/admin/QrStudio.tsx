@@ -47,17 +47,15 @@ export function QrStudio({ initialMenuUrl, readOnly }: QrStudioProps) {
           <QrCard dataUrl={qrDataUrl} />
           {qrDataUrl ? (
             <div aria-hidden="true" className={styles.printSheet}>
-              {Array.from({ length: 12 }, (_, index) => (
-                <div className={styles.printCell} key={index}>
-                  <Image
-                    alt=""
-                    height={600}
-                    src={qrDataUrl}
-                    unoptimized
-                    width={600}
-                  />
-                </div>
-              ))}
+              <div className={styles.printCell}>
+                <Image
+                  alt=""
+                  height={600}
+                  src={qrDataUrl}
+                  unoptimized
+                  width={600}
+                />
+              </div>
             </div>
           ) : null}
           <p className={styles.footnote}>

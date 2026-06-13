@@ -104,6 +104,7 @@ test("admin QR is gated and exports PDF with credentials", async ({ page }) => {
   await page.getByRole("button", { name: "Generate code" }).click();
   await expect(page.getByText("Added the menu code.")).toBeVisible();
   await expect(page.getByText("1 code")).toBeVisible();
+  await expect(page.locator("[class*=printSheet] img")).toHaveCount(1);
 
   const [download] = await Promise.all([
     page.waitForEvent("download"),
@@ -111,5 +112,5 @@ test("admin QR is gated and exports PDF with credentials", async ({ page }) => {
   ]);
 
   expect(download.suggestedFilename()).toBe("solea-qr-codes.pdf");
-  await expect(page.getByText("Exported 12 copies to PDF.")).toBeVisible();
+  await expect(page.getByText("Exported code to PDF.")).toBeVisible();
 });
