@@ -5,6 +5,7 @@
 - Found the repo was empty.
 - Moved the approved prototype files from `refrence/` to `reference/`.
 - Added project state and session handoff files.
+- Added the Debug Sweep template to `PROJECT_STATE.md`.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.
