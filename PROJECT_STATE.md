@@ -26,3 +26,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Repository remote: `https://github.com/7mdz9/Solea_.git`
 - Branch: `main`
 - Approved prototype files are stored under `reference/`.
+- Next.js App Router project is initialized in the repo root.
+- Project name: `solea`
+- TypeScript strict mode is enabled in `tsconfig.json`.
+- Build scripts: `npm run dev`, `npm run build`, `npm run typecheck`.
