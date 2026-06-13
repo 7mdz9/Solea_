@@ -19,6 +19,13 @@
 - Step 2 Debug Sweep: fixed Vitest/Prettier config; files touched: `.gitignore`, `.prettierignore`, `.prettierrc.json`, `e2e/home.spec.ts`, `package-lock.json`, `package.json`, `playwright.config.ts`, `postcss.config.mjs`, `src/app/globals.css`, `src/app/layout.tsx`, `src/app/page.test.tsx`, `src/lib/vendor-smoke.ts`, `vitest.config.ts`, `vitest.setup.ts`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 2 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run format` exit 0.
 - Step 2 Playwright check: `npm run test:e2e` exit 0.
+- Step 3: encoded approved brand tokens in `styles/tokens.css`.
+- Step 3: mapped brand colors and font families in Tailwind through `tailwind.config.ts` and `styles/tokens.css`.
+- Step 3: kept `next/font` loading DM Serif Display and Manrope, with Manrope weights 300-600.
+- Step 3 temporary render check: added a token-colored probe, built successfully, confirmed compiled token utilities, then removed the probe.
+- Step 3 verification fix: restored uppercase/no-space CSS token declarations after Prettier lowercased hex values; ignored `styles/tokens.css` in Prettier.
+- Step 3 Debug Sweep: clean; files touched: `.prettierignore`, `PROJECT_STATE.md`, `LAST_SESSION.md`, `src/app/globals.css`, `src/app/layout.tsx`, `styles/tokens.css`, `tailwind.config.ts`.
+- Step 3 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

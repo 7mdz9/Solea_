@@ -2,6 +2,7 @@
 node_modules
 test-results
 reference/*.html
+styles/tokens.css
 next-env.d.ts
 PROJECT_STATE.md
 LAST_SESSION.md

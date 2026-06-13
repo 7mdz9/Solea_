@@ -32,7 +32,10 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Build scripts: `npm run dev`, `npm run build`, `npm run start`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e`, `npm run format`.
 - Tailwind CSS is configured through `postcss.config.mjs` and imported in `src/app/globals.css`.
 - `next/font` is configured in `src/app/layout.tsx` for DM Serif Display and Manrope.
+- Brand CSS tokens are stored in `styles/tokens.css` with approved hex tokens preserved verbatim.
+- Tailwind brand colors and font families are mapped in `tailwind.config.ts` and `styles/tokens.css`.
+- Accent discipline: Lemon Rind = admin (QR) screen; Terracotta = menu screen (item numbers + Add to cart).
 - `qrcode` and `jspdf` imports are checked in `src/lib/vendor-smoke.ts`.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
 - Playwright is configured in `playwright.config.ts` with a request-only smoke test in `e2e/home.spec.ts`.
-- Prettier is configured with `.prettierrc.json`; verbatim reference HTML, bridge state files, and generated test output are ignored by `.prettierignore`.
+- Prettier is configured with `.prettierrc.json`; verbatim reference HTML, token CSS, bridge state files, and generated test output are ignored by `.prettierignore`.

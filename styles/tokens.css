@@ -1,0 +1,38 @@
+:root {
+  --porcelain:#EEE9E4;
+  --porcelain-soft:#F5F1EC;
+  --oak:#C0AE94;
+  --oak-soft:#D6C8B2;
+  --stone-moss:#6D705A;
+  --stone-moss-deep:#565942;
+  --olive:#4D4738;
+  --olive-deep:#3A3528;
+  --earth:#755F4A;
+  --seafoam:#BAB9A7;
+  --terracotta:#B56A4E;
+  --lemon-rind:#D9B86C;
+  --ink:#2A271E;
+
+  --serif:
+    var(--font-dm-serif-display), "DM Serif Display", "Times New Roman", serif;
+  --sans: var(--font-manrope), "Manrope", system-ui, -apple-system, sans-serif;
+}
+
+@theme inline {
+  --color-porcelain: var(--porcelain);
+  --color-porcelain-soft: var(--porcelain-soft);
+  --color-oak: var(--oak);
+  --color-oak-soft: var(--oak-soft);
+  --color-stone-moss: var(--stone-moss);
+  --color-stone-moss-deep: var(--stone-moss-deep);
+  --color-olive: var(--olive);
+  --color-olive-deep: var(--olive-deep);
+  --color-earth: var(--earth);
+  --color-seafoam: var(--seafoam);
+  --color-terracotta: var(--terracotta);
+  --color-lemon-rind: var(--lemon-rind);
+  --color-ink: var(--ink);
+
+  --font-serif: var(--serif);
+  --font-sans: var(--sans);
+}

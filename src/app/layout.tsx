@@ -11,7 +11,7 @@ const dmSerifDisplay = DM_Serif_Display({
 
 const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
   variable: "--font-manrope",
 });
 
