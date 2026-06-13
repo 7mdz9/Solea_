@@ -51,6 +51,8 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Admin QR export uses `jspdf` to download 12 repeated copies of the single menu QR on one A4 sheet with faint cut guides.
 - Production `/admin/*` routes are protected by Basic Auth middleware using `ADMIN_PASSWORD` from the environment.
 - Public routes `/` and `/menu` remain outside the admin gate.
+- Future commerce placeholders are types only in `types/commerce.ts`.
+- `src/app/api/README.md` reserves `/api/orders` and `/api/payments` as unbuilt; no API route handlers are present.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
 - Playwright is configured in `playwright.config.ts` with a request-only smoke test in `e2e/home.spec.ts`.
 - Prettier is configured with `.prettierrc.json`; verbatim reference HTML, token CSS, bridge state files, and generated test output are ignored by `.prettierignore`.
@@ -66,6 +68,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 8 reflected: `/admin/qr` renders the Solea Menu QR Studio with menu-address controls, Generate, Clear, empty/feedback states, and a bare QR preview.
 - Step 9 reflected: `/admin/qr` supports Export PDF and Print for a clean 12-copy QR sheet; `/menu` print hides cart chrome.
 - Step 10 reflected: production `/admin/*` uses a lightweight Basic Auth gate scoped by middleware; public menu routes remain open.
+- Step 11 reflected: future Order, OrderItem, and Payment types exist without logic; the API namespace is reserved by README only.
 
 ## Key File Map
 - App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`, `src/app/admin/qr/page.tsx`, `src/middleware.ts`
@@ -74,14 +77,15 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Admin QR components: `src/components/admin/QrStudio.tsx`, `src/components/admin/QrStudioHeader.tsx`, `src/components/admin/QrControls.tsx`, `src/components/admin/QrCard.tsx`, `src/components/admin/QrActions.tsx`, `src/components/admin/useQrCodes.ts`, `src/components/admin/admin-qr.module.css`
 - Global styles: `src/app/globals.css`
 - Brand tokens: `styles/tokens.css`, `tailwind.config.ts`
-- Menu source: `types/menu.ts`, `data/menu.ts`, `lib/menu-repository.ts`, `lib/use-cart.ts`
+- Menu source: `types/menu.ts`, `types/commerce.ts`, `data/menu.ts`, `lib/menu-repository.ts`, `lib/use-cart.ts`
+- Reserved API namespace: `src/app/api/README.md`
 - Tooling config: `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `eslint.config.mjs`, `vitest.config.ts`, `vitest.setup.ts`, `playwright.config.ts`, `.prettierrc.json`, `.prettierignore`, `.env.example`
 - Tests and probes: `src/app/page.test.tsx`, `src/lib/vendor-smoke.ts`, `lib/menu-repository.test.ts`, `e2e/home.spec.ts`
 - Approved prototypes: `reference/solea-menu-prototype.html`, `reference/solea-qr-generator-prototype.html`
 - Bridge state: `PROJECT_STATE.md`, `LAST_SESSION.md`
 
 ## Latest Verification
-- Steps 1-10 are reflected in this file.
+- Steps 1-11 are reflected in this file.
 - No table logic found in app source/config: no table IDs, table routes, `?table=` query parameter, Table data model, or per-table QR logic.
 - No payment SDK, payment route, checkout/charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
 - Public menu page verification: `/menu` renders masthead, SAVORY and SWEET sections, all 8 items with prices/descriptions, empty control mount points, two columns at desktop width, one column at mobile width, and Terracotta item numbers. `/` redirects to `/menu`.
@@ -89,11 +93,13 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 8 browser verification: production `/admin/qr` serves the menu-address field read-only with `https://soleauae.com/menu`; Generate renders one bare QR image on a white tile with no card text/label/URL; Clear empties the preview; the Lemon Rind header tick renders correctly.
 - Step 9 browser verification: Export PDF downloads `solea-qr-codes.pdf` containing repeated QR copies; admin print media hides chrome and shows 12 clean QR cells; menu print media hides the cart bar, drawer, and overlay.
 - Step 10 browser verification: production `/` and `/menu` load without credentials; `/admin/qr` returns 401 without credentials or with a wrong password; `/admin/qr` loads with valid Basic Auth credentials.
+- Step 11 verification: `types/commerce.ts` typechecks; production `/api/orders` and `/api/payments` return 404; no API route handlers were added.
 - `npm run build` exit 0, `npm run typecheck` exit 0, and `npm run lint` exit 0.
 - Step 5 menu repository test: `npm test` exit 0.
 - Step 7 invariant grep: `rg -n "stripe|checkout|/api/payments|charge\(" src\app src\components lib` exit 1 with no matches.
 - Step 8 invariant scan: `rg -n "table|\?table|Table|stripe|/api/payments|charge\(" src\app src\components lib data types` exit 1 with no matches.
 - Step 10 env grep: `rg -n "ADMIN_PASSWORD" src\app src\components lib` exit 1 with no matches; `src/middleware.ts` reads `process.env.ADMIN_PASSWORD`.
+- Step 11 grep: `rg -n "checkout|stripe|payment intent|charge\(" src\app` exit 1 with no matches.
 
 ## Spec Compliance
 - menu page -> implemented
@@ -101,3 +107,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - admin QR page -> implemented; single bare QR encodes `MENU_URL` and no table logic is present.
 - QR admin + export -> implemented; export/print repeat the single bare menu QR with no labels or URLs on codes.
 - admin access gate -> implemented; production `/admin/*` is protected by Basic Auth and public menu routes are not blocked.
+
+## Stubs/Mocks
+- future commerce types, not implemented: `Order`, `OrderItem`, and `Payment` in `types/commerce.ts`.
+- reserved API namespace, not implemented: `/api/orders` and `/api/payments` noted in `src/app/api/README.md`.

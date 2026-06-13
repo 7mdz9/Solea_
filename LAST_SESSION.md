@@ -86,6 +86,15 @@
 - Step 10 invariant checks: `rg -n "ADMIN_PASSWORD" src\app src\components lib` exit 1; no table logic or payment SDK/route/charge source matches.
 - Step 10 Debug Sweep: clean; files touched: `src/middleware.ts`, `.env.example`, `.gitignore`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 10 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0.
+- Step 11: added `types/commerce.ts` with future-only `Order`, `OrderItem`, and `Payment` interfaces.
+- Step 11: money fields are typed as integer minor units with explicit `currency`.
+- Step 11: reserved `src/app/api/` with a README noting `/api/orders` and `/api/payments` are unbuilt.
+- Step 11: no API route handlers, UI, commerce logic, DB, or table logic was added.
+- Step 11 route check: production `/api/orders` returned 404; production `/api/payments` returned 404.
+- Step 11 verification: `npm run typecheck` exit 0; `npm run lint` exit 0; `npm run format` exit 0.
+- Step 11 invariant check: `rg -n "checkout|stripe|payment intent|charge\(" src\app` exit 1.
+- Step 11 Debug Sweep: clean; files touched: `types/commerce.ts`, `src/app/api/README.md`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 11 Debug Sweep DoD: `npm run typecheck` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.
