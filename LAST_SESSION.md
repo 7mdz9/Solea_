@@ -76,7 +76,18 @@
 - Step 9 invariant checks: no table logic and no payment SDK/route/charge source matches.
 - Step 9 Debug Sweep: clean after rerunning `npm run typecheck` by itself because the first parallel sweep raced with `.next` generation; files touched: `src/components/admin/QrActions.tsx`, `src/components/admin/QrStudio.tsx`, `src/components/admin/admin-qr.module.css`, `src/components/admin/useQrCodes.ts`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 9 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0.
+- Step 10: added production Basic Auth middleware for `/admin/*` using the environment variable named in `.env.example`.
+- Step 10: public `/` and `/menu` remain outside the middleware gate.
+- Step 10: `.env.example` documents the required admin password variable name; no secret value was added to code, state files, logs, or git.
+- Step 10 browser check: production `/` and `/menu` loaded without credentials; `/admin/qr` returned 401 without credentials and with wrong credentials; `/admin/qr` loaded with valid Basic Auth credentials.
+- Security self-check — Step 10: held. Verified `src/middleware.ts:47` reads the password from env only, `src/middleware.ts:63`-`src/middleware.ts:65` scopes the gate to `/admin/:path*`, `src/middleware.ts:4`-`src/middleware.ts:10` returns a generic 401 challenge without echoing a secret, and no logging is present.
+- Step 10 future hardening note: rate limiting / lockout is out of scope for v1.
+- Step 10 verification: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm run format` exit 0.
+- Step 10 invariant checks: `rg -n "ADMIN_PASSWORD" src\app src\components lib` exit 1; no table logic or payment SDK/route/charge source matches.
+- Step 10 Debug Sweep: clean; files touched: `src/middleware.ts`, `.env.example`, `.gitignore`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 10 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.
+- Future hardening: add rate limiting / lockout for the admin gate.
 - Await the next implementation task.
