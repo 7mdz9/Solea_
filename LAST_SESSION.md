@@ -51,6 +51,15 @@
 - Step 6 drift check: no table logic and no cart/payment SDK/code found in app source/config.
 - Step 6 Debug Sweep: clean; files touched: `src/app/page.tsx`, `src/app/page.test.tsx`, `src/app/menu/page.tsx`, `src/components/menu/*`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 6 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0.
+- Step 7: added client-only cart state in `lib/use-cart.ts`.
+- Step 7: added cart UI components in `src/components/cart/` for Add to cart, quantity steppers, sticky order bar, cart drawer, and inert Pay button.
+- Step 7: mounted cart controls into the existing menu item control slot through `src/components/menu/MenuClient.tsx`.
+- Step 7: Pay only reveals `Online payment is coming soon. Secure checkout will be available shortly — please pay at the counter for now. Thank you.` and performs no navigation, transaction, request, or persistence.
+- Step 7 verification: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run format` exit 0.
+- Step 7 browser check: adding items updated bar/subtotal; steppers and Remove worked; drawer opened/closed by View order, Escape, and overlay; mobile drawer filled the viewport; Pay showed the notice and the URL did not change; Pay triggered no network request.
+- Step 7 invariant checks: strict payment grep found no executable matches; table scan found no source matches.
+- Step 7 Debug Sweep: fixed JSX spacing in Pay notice copy; files touched: `lib/use-cart.ts`, `src/app/globals.css`, `src/app/menu/page.tsx`, `src/components/cart/*`, `src/components/menu/MenuClient.tsx`, `src/components/menu/MenuItem.tsx`, `src/components/menu/MenuSection.tsx`, `src/components/menu/menu.module.css`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 7 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

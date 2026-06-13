@@ -37,6 +37,10 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+body.cart-open {
+  overflow: hidden;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

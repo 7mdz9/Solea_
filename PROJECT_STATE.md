@@ -43,6 +43,9 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Public menu page is implemented at `src/app/menu/page.tsx` using `getMenu()`.
 - Root route redirects to `/menu` from `src/app/page.tsx`.
 - Menu UI components are stored in `src/components/menu/`.
+- Client-only cart state is implemented in `lib/use-cart.ts`.
+- Cart UI components are stored in `src/components/cart/`.
+- `/menu` mounts the cart through `src/components/menu/MenuClient.tsx`; Pay is inert and only reveals the online payment coming soon notice.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
 - Playwright is configured in `playwright.config.ts` with a request-only smoke test in `e2e/home.spec.ts`.
 - Prettier is configured with `.prettierrc.json`; verbatim reference HTML, token CSS, bridge state files, and generated test output are ignored by `.prettierignore`.
@@ -54,25 +57,30 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 4 reflected: root layout/global baseline applies the Porcelain surface, subtle warm background wash, Manrope typography baseline, and `prefers-reduced-motion` handling.
 - Step 5 reflected: menu types, verbatim menu content/prices, and repository access are in place with a unit test covering 2 categories and 8 items.
 - Step 6 reflected: `/menu` renders the public menu page from `getMenu()` without cart/payment controls, and `/` redirects to `/menu`.
+- Step 7 reflected: `/menu` includes the client-only cart, sticky order bar, cart drawer, item steppers, Remove controls, subtotal math, and inert Pay button.
 
 ## Key File Map
 - App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`
-- Menu components: `src/components/menu/Masthead.tsx`, `src/components/menu/MenuSection.tsx`, `src/components/menu/MenuItem.tsx`, `src/components/menu/MenuFooter.tsx`, `src/components/menu/money.ts`, `src/components/menu/menu.module.css`
+- Menu components: `src/components/menu/Masthead.tsx`, `src/components/menu/MenuClient.tsx`, `src/components/menu/MenuSection.tsx`, `src/components/menu/MenuItem.tsx`, `src/components/menu/MenuFooter.tsx`, `src/components/menu/money.ts`, `src/components/menu/menu.module.css`
+- Cart components: `src/components/cart/AddToCart.tsx`, `src/components/cart/QtyStepper.tsx`, `src/components/cart/CartBar.tsx`, `src/components/cart/CartDrawer.tsx`, `src/components/cart/PayButton.tsx`, `src/components/cart/cart.module.css`
 - Global styles: `src/app/globals.css`
 - Brand tokens: `styles/tokens.css`, `tailwind.config.ts`
-- Menu source: `types/menu.ts`, `data/menu.ts`, `lib/menu-repository.ts`
+- Menu source: `types/menu.ts`, `data/menu.ts`, `lib/menu-repository.ts`, `lib/use-cart.ts`
 - Tooling config: `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `eslint.config.mjs`, `vitest.config.ts`, `vitest.setup.ts`, `playwright.config.ts`, `.prettierrc.json`, `.prettierignore`
 - Tests and probes: `src/app/page.test.tsx`, `src/lib/vendor-smoke.ts`, `lib/menu-repository.test.ts`, `e2e/home.spec.ts`
 - Approved prototypes: `reference/solea-menu-prototype.html`, `reference/solea-qr-generator-prototype.html`
 - Bridge state: `PROJECT_STATE.md`, `LAST_SESSION.md`
 
 ## Latest Verification
-- Steps 1-6 are reflected in this file.
+- Steps 1-7 are reflected in this file.
 - No table logic found in app source/config: no table IDs, table routes, `?table=` query parameter, Table data model, or per-table QR logic.
-- No cart, payment SDK, checkout, charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
+- No payment SDK, payment route, checkout/charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
 - Public menu page verification: `/menu` renders masthead, SAVORY and SWEET sections, all 8 items with prices/descriptions, empty control mount points, two columns at desktop width, one column at mobile width, and Terracotta item numbers. `/` redirects to `/menu`.
+- Step 7 browser verification: adding items updates the sticky order bar and subtotal; item and drawer steppers work; decrementing to zero removes an item; Remove works; drawer opens/closes by View order, Escape, and overlay; mobile drawer fills the viewport; Pay reveals the online payment coming soon notice with no URL change and no network request.
 - `npm run build` exit 0, `npm run typecheck` exit 0, and `npm run lint` exit 0.
 - Step 5 menu repository test: `npm test` exit 0.
+- Step 7 invariant grep: `rg -n "stripe|checkout|/api/payments|charge\(" src\app src\components lib` exit 1 with no matches.
 
 ## Spec Compliance
 - menu page -> implemented
+- cart + inert payment -> implemented; Pay is inert.

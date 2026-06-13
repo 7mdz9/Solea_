@@ -1,17 +1,24 @@
+import type { ReactNode } from "react";
 import type { MenuCategory } from "../../../types/menu";
+import type { MenuItem as MenuItemType } from "../../../types/menu";
 import { MenuItem } from "./MenuItem";
 import styles from "./menu.module.css";
 
 type MenuSectionProps = {
   category: MenuCategory;
   number: string;
+  renderControl?: (item: MenuItemType) => ReactNode;
 };
 
 function pad(value: number) {
   return String(value).padStart(2, "0");
 }
 
-export function MenuSection({ category, number }: MenuSectionProps) {
+export function MenuSection({
+  category,
+  number,
+  renderControl,
+}: MenuSectionProps) {
   return (
     <section className={styles.section}>
       <div className={styles.sectionHead}>
@@ -21,7 +28,12 @@ export function MenuSection({ category, number }: MenuSectionProps) {
       </div>
       <div className={styles.items}>
         {category.items.map((item, index) => (
-          <MenuItem item={item} key={item.id} number={pad(index + 1)} />
+          <MenuItem
+            control={renderControl?.(item)}
+            item={item}
+            key={item.id}
+            number={pad(index + 1)}
+          />
         ))}
       </div>
     </section>

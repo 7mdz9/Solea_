@@ -2,6 +2,11 @@
   max-width: 1080px;
   margin: 0 auto;
   padding: clamp(40px, 7vw, 88px) clamp(22px, 6vw, 72px) 64px;
+  transition: padding-bottom 0.3s ease;
+}
+
+.pageCartActive {
+  padding-bottom: calc(78px + 40px);
 }
 
 .masthead {
@@ -190,6 +195,10 @@
   .reveal {
     animation: none;
   }
+
+  .page {
+    transition: none;
+  }
 }
 
 @media print {
@@ -199,5 +208,9 @@
 
   .itemControl {
     display: none;
+  }
+
+  .pageCartActive {
+    padding-bottom: 64px;
   }
 }
