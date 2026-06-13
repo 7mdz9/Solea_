@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
 
 const qrOptions = {
@@ -11,6 +12,11 @@ const qrOptions = {
     dark: "#2A271E",
     light: "#ffffff",
   },
+};
+
+const pdfQrOptions = {
+  ...qrOptions,
+  width: 600,
 };
 
 function isValidUrl(value: string) {
@@ -25,6 +31,7 @@ function isValidUrl(value: string) {
 export function useQrCodes(initialMenuUrl: string) {
   const [menuUrl, setMenuUrl] = useState(initialMenuUrl);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const [encodedUrl, setEncodedUrl] = useState<string | null>(null);
   const [feedback, setFeedback] = useState("");
   const [isError, setIsError] = useState(false);
 
@@ -43,23 +50,68 @@ export function useQrCodes(initialMenuUrl: string) {
       return;
     }
 
-    const dataUrl = await QRCode.toDataURL(
-      value.replace(/\/+$/, ""),
-      qrOptions,
-    );
+    const normalizedUrl = value.replace(/\/+$/, "");
+    const dataUrl = await QRCode.toDataURL(normalizedUrl, qrOptions);
     setQrDataUrl(dataUrl);
+    setEncodedUrl(normalizedUrl);
     setFeedback("Added the menu code.");
     setIsError(false);
   };
 
   const clear = () => {
     setQrDataUrl(null);
+    setEncodedUrl(null);
     setFeedback("Cleared.");
+    setIsError(false);
+  };
+
+  const exportPdf = async () => {
+    if (!encodedUrl) {
+      setFeedback("Generate the menu code before exporting.");
+      setIsError(true);
+      return;
+    }
+
+    const doc = new jsPDF({
+      unit: "mm",
+      format: "a4",
+      orientation: "portrait",
+    });
+    const dataUrl = await QRCode.toDataURL(encodedUrl, pdfQrOptions);
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 16;
+    const gutter = 8;
+    const columns = 3;
+    const rows = 4;
+    const copies = columns * rows;
+    const cellWidth =
+      (pageWidth - margin * 2 - gutter * (columns - 1)) / columns;
+    const cellHeight = (pageHeight - margin * 2 - gutter * (rows - 1)) / rows;
+    const qrSize = Math.min(cellWidth, cellHeight) - 8;
+
+    for (let index = 0; index < copies; index += 1) {
+      const row = Math.floor(index / columns);
+      const column = index % columns;
+      const x = margin + column * (cellWidth + gutter);
+      const y = margin + row * (cellHeight + gutter);
+      const qrX = x + (cellWidth - qrSize) / 2;
+      const qrY = y + (cellHeight - qrSize) / 2;
+
+      doc.setDrawColor(225, 216, 200);
+      doc.setLineWidth(0.2);
+      doc.rect(x, y, cellWidth, cellHeight);
+      doc.addImage(dataUrl, "PNG", qrX, qrY, qrSize, qrSize);
+    }
+
+    doc.save("solea-qr-codes.pdf");
+    setFeedback("Exported 12 copies to PDF.");
     setIsError(false);
   };
 
   return {
     clear,
+    exportPdf,
     feedback,
     generate,
     isError,

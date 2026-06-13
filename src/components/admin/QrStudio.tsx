@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { QrActions } from "./QrActions";
 import { QrCard } from "./QrCard";
 import { QrControls } from "./QrControls";
@@ -14,6 +15,7 @@ type QrStudioProps = {
 
 export function QrStudio({ initialMenuUrl, readOnly }: QrStudioProps) {
   const qr = useQrCodes(initialMenuUrl);
+  const qrDataUrl = qr.qrDataUrl;
 
   return (
     <div className={styles.wrap}>
@@ -32,12 +34,32 @@ export function QrStudio({ initialMenuUrl, readOnly }: QrStudioProps) {
             <div>
               <h2>QR cards</h2>
               <span className={styles.count}>
-                {qr.qrDataUrl ? "1 code" : "No codes yet"}
+                {qrDataUrl ? "1 code" : "No codes yet"}
               </span>
             </div>
-            <QrActions hasCode={Boolean(qr.qrDataUrl)} onClear={qr.clear} />
+            <QrActions
+              hasCode={Boolean(qrDataUrl)}
+              onClear={qr.clear}
+              onExportPdf={qr.exportPdf}
+              onPrint={() => window.print()}
+            />
           </div>
-          <QrCard dataUrl={qr.qrDataUrl} />
+          <QrCard dataUrl={qrDataUrl} />
+          {qrDataUrl ? (
+            <div aria-hidden="true" className={styles.printSheet}>
+              {Array.from({ length: 12 }, (_, index) => (
+                <div className={styles.printCell} key={index}>
+                  <Image
+                    alt=""
+                    height={600}
+                    src={qrDataUrl}
+                    unoptimized
+                    width={600}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : null}
           <p className={styles.footnote}>
             Prototype only &mdash; the code points to{" "}
             <b>https://soleauae.com/menu</b>. Scannability and the live menu are
