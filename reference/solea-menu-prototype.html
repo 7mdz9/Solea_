@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Solea · Pop-Up Menu</title>
+
+<!-- Brand typefaces -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============================================================
+     SOLEA — Pop-Up Menu (prototype, with cart + payment)
+     Payment is intentionally inert: the Pay button shows a calm
+     "coming soon" state and never navigates. A gateway (Stripe,
+     etc.) is wired in later.
+     Prices are AED placeholders — easy to replace in the data.
+     Single accent on this page: Terracotta.
+     ============================================================ */
+  :root{
+    --porcelain:#EEE9E4;
+    --porcelain-soft:#F5F1EC;
+    --oak:#C0AE94;
+    --stone-moss:#6D705A;
+    --stone-moss-deep:#565942;
+    --olive:#4D4738;
+    --olive-deep:#3A3528;
+    --earth:#755F4A;
+    --seafoam:#BAB9A7;
+    --terracotta:#B56A4E;
+    --ink:#2A271E;
+
+    --serif:"DM Serif Display","Times New Roman",serif;
+    --sans:"Manrope",system-ui,-apple-system,sans-serif;
+
+    --hairline:rgba(74,67,56,0.18);
+    --measure:1080px;
+    --bar-h:78px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--sans);
+    color:var(--olive-deep);
+    background:var(--porcelain);
+    background-image:
+      radial-gradient(130% 70% at 100% 0%, rgba(192,174,148,0.10), transparent 60%),
+      radial-gradient(120% 70% at 0% 100%, rgba(192,174,148,0.07), transparent 55%);
+    background-attachment:fixed;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  body.cart-open{overflow:hidden;}
+
+  .page{max-width:var(--measure);margin:0 auto;padding:clamp(40px,7vw,88px) clamp(22px,6vw,72px) 64px;transition:padding-bottom .3s ease;}
+  body.cart-active .page{padding-bottom:calc(var(--bar-h) + 40px);}
+
+  /* ---------------- Masthead ---------------- */
+  .masthead{margin-bottom:clamp(40px,6vw,64px);}
+  .wordmark{font-family:var(--serif);font-size:clamp(56px,12vw,104px);line-height:0.9;color:var(--olive);letter-spacing:0.5px;margin:0;}
+  .tagline{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2.4vw,19px);color:var(--earth);letter-spacing:2px;margin-top:14px;}
+  .eyebrow{margin-top:clamp(26px,4vw,38px);font-size:12px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--stone-moss);}
+  .masthead-rule{height:1px;background:var(--hairline);margin-top:16px;}
+
+  /* ---------------- Section ---------------- */
+  .section{margin-top:clamp(48px,6vw,72px);}
+  .section-head{display:flex;align-items:center;gap:24px;margin-bottom:clamp(28px,4vw,40px);}
+  .section-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,4.4vw,38px);text-transform:uppercase;letter-spacing:clamp(4px,1.2vw,9px);color:var(--olive);margin:0;white-space:nowrap;}
+  .section-head .rule{flex:1;height:1px;background:var(--hairline);}
+  .section-head .snum{font-size:13px;letter-spacing:2px;color:var(--seafoam);font-variant-numeric:tabular-nums;flex-shrink:0;}
+
+  /* ---------------- Items ---------------- */
+  .items{display:grid;grid-template-columns:1fr;gap:clamp(30px,3.6vw,40px) clamp(40px,5vw,72px);align-items:start;}
+  @media (min-width:760px){.items{grid-template-columns:1fr 1fr;}}
+
+  .item{display:grid;grid-template-columns:auto 1fr;column-gap:18px;}
+  .item .num{
+    font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:1.5px;
+    color:var(--terracotta);font-variant-numeric:tabular-nums;padding-top:8px;
+  }
+  .name-row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;}
+  .item .name{font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.6vw,22px);line-height:1.25;color:var(--olive-deep);}
+  .item .price{font-family:var(--sans);font-weight:500;font-size:14px;color:var(--stone-moss-deep);white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .item .desc{font-family:var(--sans);font-weight:300;font-size:14.5px;line-height:1.6;color:var(--earth);margin-top:7px;max-width:42ch;}
+  .item-control{margin-top:12px;min-height:34px;}
+
+  /* Add button — first design colour (Terracotta) */
+  .add-btn{
+    font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+    color:var(--terracotta);background:transparent;border:1px solid var(--terracotta);
+    border-radius:999px;padding:7px 16px;cursor:pointer;transition:all .18s ease;
+  }
+  .add-btn:hover{background:var(--terracotta);color:var(--porcelain-soft);}
+  .add-btn:focus-visible{outline:2px solid var(--stone-moss);outline-offset:3px;}
+
+  /* qty stepper */
+  .stepper{display:inline-flex;align-items:center;border:1px solid var(--oak);border-radius:999px;overflow:hidden;background:var(--porcelain-soft);}
+  .stepper button{
+    width:34px;height:32px;border:none;background:transparent;cursor:pointer;
+    font-size:17px;line-height:1;color:var(--olive);transition:background .15s ease;
+  }
+  .stepper button:hover{background:rgba(109,112,90,0.10);}
+  .stepper button:focus-visible{outline:2px solid var(--stone-moss);outline-offset:-2px;}
+  .stepper .qty{min-width:30px;text-align:center;font-size:14px;font-weight:600;color:var(--olive-deep);font-variant-numeric:tabular-nums;}
+
+  /* ---------------- Footer ---------------- */
+  .footer{margin-top:clamp(56px,8vw,96px);padding-top:24px;border-top:1px solid var(--hairline);display:flex;align-items:baseline;justify-content:space-between;gap:18px;flex-wrap:wrap;}
+  .footer .mark{font-size:12px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--stone-moss);}
+  .footer .note{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--earth);letter-spacing:0.3px;}
+
+  /* ---------------- Cart bar (sticky) ---------------- */
+  .cart-bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:40;height:var(--bar-h);
+    background:var(--porcelain-soft);border-top:1px solid var(--hairline);
+    box-shadow:0 -10px 30px -20px rgba(58,53,40,0.45);
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:0 clamp(20px,6vw,72px);
+    transform:translateY(120%);transition:transform .32s cubic-bezier(.22,.61,.36,1);
+  }
+  body.cart-active .cart-bar{transform:translateY(0);}
+  .cart-summary{display:flex;flex-direction:column;line-height:1.25;}
+  .cart-summary .count{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--stone-moss);}
+  .cart-summary .total{font-family:var(--serif);font-size:22px;color:var(--olive);font-variant-numeric:tabular-nums;}
+  .view-order{
+    font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+    background:var(--olive);color:var(--porcelain-soft);border:none;border-radius:999px;
+    padding:14px 26px;cursor:pointer;transition:background .18s ease;
+  }
+  .view-order:hover{background:var(--olive-deep);}
+  .view-order:focus-visible{outline:2px solid var(--terracotta);outline-offset:3px;}
+
+  /* ---------------- Cart drawer ---------------- */
+  .overlay{position:fixed;inset:0;z-index:50;background:rgba(42,39,30,0.32);opacity:0;visibility:hidden;transition:opacity .28s ease,visibility .28s ease;}
+  body.cart-open .overlay{opacity:1;visibility:visible;}
+
+  .drawer{
+    position:fixed;top:0;bottom:0;right:0;z-index:60;width:min(440px,100%);
+    background:var(--porcelain);border-left:1px solid var(--hairline);
+    display:flex;flex-direction:column;
+    transform:translateX(100%);transition:transform .32s cubic-bezier(.22,.61,.36,1);
+    box-shadow:-24px 0 60px -40px rgba(58,53,40,0.5);
+  }
+  body.cart-open .drawer{transform:translateX(0);}
+
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:26px clamp(22px,5vw,30px) 18px;border-bottom:1px solid var(--hairline);}
+  .drawer-head h3{font-family:var(--serif);font-weight:400;font-size:26px;color:var(--olive);margin:0;}
+  .drawer-close{background:none;border:none;font-size:26px;line-height:1;color:var(--earth);cursor:pointer;padding:4px;border-radius:6px;}
+  .drawer-close:hover{color:var(--ink);}
+  .drawer-close:focus-visible{outline:2px solid var(--stone-moss);outline-offset:2px;}
+
+  .drawer-body{flex:1;overflow-y:auto;padding:8px clamp(22px,5vw,30px);}
+  .empty-cart{padding:60px 0;text-align:center;color:var(--earth);font-family:var(--serif);font-style:italic;font-size:17px;}
+
+  .line{display:grid;grid-template-columns:1fr auto;gap:6px 14px;padding:20px 0;border-bottom:1px solid var(--hairline);}
+  .line .l-name{font-family:var(--serif);font-size:18px;color:var(--olive-deep);line-height:1.2;}
+  .line .l-price{font-size:14px;color:var(--stone-moss-deep);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;}
+  .line .l-controls{display:flex;align-items:center;justify-content:space-between;grid-column:1 / -1;margin-top:6px;}
+  .line .l-remove{background:none;border:none;cursor:pointer;font-family:var(--sans);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--earth);padding:0;}
+  .line .l-remove:hover{color:var(--terracotta);}
+  .line .l-remove:focus-visible{outline:2px solid var(--stone-moss);outline-offset:2px;}
+
+  .drawer-foot{padding:20px clamp(22px,5vw,30px) calc(22px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--hairline);background:var(--porcelain-soft);}
+  .subtotal-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;}
+  .subtotal-row .s-label{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--stone-moss);}
+  .subtotal-row .s-amount{font-family:var(--serif);font-size:26px;color:var(--olive);font-variant-numeric:tabular-nums;}
+  .foot-note{font-size:12px;color:var(--earth);margin:0 0 16px;}
+
+  .pay-btn{
+    width:100%;font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+    background:var(--olive);color:var(--porcelain-soft);border:none;border-radius:12px;
+    padding:17px;cursor:pointer;transition:background .18s ease, transform .12s ease;
+  }
+  .pay-btn:hover{background:var(--olive-deep);}
+  .pay-btn:active{transform:translateY(1px);}
+  .pay-btn:focus-visible{outline:2px solid var(--terracotta);outline-offset:3px;}
+
+  .pay-notice{
+    margin-top:14px;padding:14px 16px;border:1px solid var(--oak);border-radius:10px;
+    background:var(--porcelain);color:var(--earth);font-size:13.5px;line-height:1.5;
+    display:none;
+  }
+  .pay-notice.show{display:block;}
+  .pay-notice strong{font-family:var(--serif);font-weight:400;font-style:italic;color:var(--olive);}
+
+  /* ---------------- Motion ---------------- */
+  .reveal{opacity:0;transform:translateY(10px);}
+  .revealed .reveal{opacity:1;transform:none;transition:opacity .7s ease, transform .7s ease;}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1 !important;transform:none !important;}
+    .revealed .reveal,.cart-bar,.drawer,.overlay,.page{transition:none !important;}
+  }
+
+  /* ---------------- Print ---------------- */
+  @media print{
+    body{background:#fff;background-image:none;}
+    .reveal{opacity:1 !important;transform:none !important;}
+    .section{break-inside:avoid;}
+    .item-control,.cart-bar,.overlay,.drawer{display:none !important;}
+    body.cart-active .page{padding-bottom:64px;}
+  }
+</style>
+</head>
+<body>
+  <main class="page" id="page"><!-- menu renders here --></main>
+
+  <!-- Sticky order bar -->
+  <div class="cart-bar" id="cartBar" role="region" aria-label="Your order">
+    <div class="cart-summary">
+      <span class="count" id="barCount">0 items</span>
+      <span class="total" id="barTotal">AED 0</span>
+    </div>
+    <button class="view-order" id="viewOrder" type="button">View order</button>
+  </div>
+
+  <!-- Cart drawer -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Your order" aria-hidden="true">
+    <div class="drawer-head">
+      <h3>Your order</h3>
+      <button class="drawer-close" id="drawerClose" type="button" aria-label="Close order">&times;</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-foot">
+      <div class="subtotal-row">
+        <span class="s-label">Subtotal</span>
+        <span class="s-amount" id="subtotal">AED 0</span>
+      </div>
+      <p class="foot-note">Prices in AED. Taxes shown at checkout.</p>
+      <button class="pay-btn" id="payBtn" type="button">Pay</button>
+      <div class="pay-notice" id="payNotice" role="status">
+        <strong>Online payment is coming soon.</strong> Secure checkout will be available shortly — please pay at the counter for now. Thank you.
+      </div>
+    </div>
+  </aside>
+
+<script>
+  /* ------------------------------------------------------------
+     Menu data — single source of truth.
+     price: AED placeholder (whole AED for the prototype). Replace
+     with real prices when ready. Production stores minor units.
+     ------------------------------------------------------------ */
+  const menu = {
+    brand: "Solea",
+    tagline: "— Taste the sun —",
+    title: "Pop-Up Menu",
+    sections: [
+      { name: "Savory", items: [
+        { id:"truffle-toast", name:"Truffle Mushroom Toast on Milk Bread", price:38,
+          desc:"Buttery toasted milk bread topped with rich truffle mushrooms." },
+        { id:"leek-quiche", name:"Roasted Leek, Feta & Spinach Quiche", price:34,
+          desc:"Buttery flaky pastry filled with roasted leeks, baby spinach, and whipped feta." },
+        { id:"tomato-tatin", name:"Tomato Tatin Puff", price:32,
+          desc:"Caramelized tomatoes baked on crisp puff pastry with Parmesan cream and fresh basil." },
+        { id:"zaatar-brioche", name:"Zaatar & Labneh Laminated Brioche", price:30,
+          desc:"Buttery laminated brioche filled with whipped labneh, premium zaatar, and extra virgin olive oil." }
+      ]},
+      { name: "Sweet", items: [
+        { id:"pistachio-tart", name:"Pistachio Raspberry Tart", price:36,
+          desc:"Graham biscuit crust, pistachio cream, raspberry confit, and fresh raspberries." },
+        { id:"coconut-shortcake", name:"Coconut Strawberry Shortcake", price:32,
+          desc:"Light chiffon sponge with coconut cream and fresh strawberries." },
+        { id:"the-peanut", name:"The Peanut", price:34,
+          desc:"Peanut praline, milk chocolate mousse, peanut crunch, and caramelized peanuts." },
+        { id:"lemon-madeleine", name:"Lemon Yuzu Madeleine", price:18,
+          desc:"Citrus-forward classic French sponge cake." }
+      ]},
+    ],
+    footerMark: "Solea · UAE",
+    footerNote: ""
+  };
+
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+  const pad = (n) => String(n).padStart(2,"0");
+  const money = (n) => "AED " + n;
+
+  // flat lookup for totals
+  const byId = {};
+  menu.sections.forEach(s => s.items.forEach(it => { byId[it.id] = it; }));
+
+  // cart state: { id: qty }
+  const cart = {};
+
+  /* ---------------- Render menu ---------------- */
+  function render(m){
+    const sections = m.sections.map((sec, i) => {
+      const items = sec.items.map((it, j) => `
+        <article class="item reveal">
+          <span class="num">${pad(j+1)}</span>
+          <div class="body">
+            <div class="name-row">
+              <span class="name">${esc(it.name)}</span>
+              <span class="price">${money(it.price)}</span>
+            </div>
+            <p class="desc">${esc(it.desc)}</p>
+            <div class="item-control" data-control="${esc(it.id)}"></div>
+          </div>
+        </article>`).join("");
+      return `
+        <section class="section">
+          <div class="section-head">
+            <h2>${esc(sec.name)}</h2><span class="rule"></span><span class="snum">${pad(i+1)}</span>
+          </div>
+          <div class="items">${items}</div>
+        </section>`;
+    }).join("");
+
+    return `
+      <header class="masthead">
+        <h1 class="wordmark">${esc(m.brand)}</h1>
+        <div class="tagline">${esc(m.tagline)}</div>
+        <div class="eyebrow">${esc(m.title)}</div>
+        <div class="masthead-rule"></div>
+      </header>
+      ${sections}
+      <footer class="footer">
+        <span class="mark">${esc(m.footerMark)}</span>
+        ${m.footerNote ? `<span class="note">${esc(m.footerNote)}</span>` : ""}
+      </footer>`;
+  }
+
+  const page = document.getElementById("page");
+  page.innerHTML = render(menu);
+
+  /* ---------------- Cart logic ---------------- */
+  const $ = (id) => document.getElementById(id);
+
+  function qtyOf(id){ return cart[id] || 0; }
+  function add(id){ cart[id] = qtyOf(id) + 1; refresh(); }
+  function dec(id){ const q = qtyOf(id) - 1; if (q <= 0) delete cart[id]; else cart[id] = q; refresh(); }
+  function remove(id){ delete cart[id]; refresh(); }
+  function count(){ return Object.values(cart).reduce((a,b)=>a+b,0); }
+  function subtotal(){ return Object.entries(cart).reduce((sum,[id,q]) => sum + byId[id].price*q, 0); }
+
+  function controlHTML(id){
+    const q = qtyOf(id);
+    if (!q){
+      return `<button class="add-btn" type="button" data-add="${id}">Add to cart</button>`;
+    }
+    return `
+      <div class="stepper" role="group" aria-label="Quantity">
+        <button type="button" data-dec="${id}" aria-label="Decrease">&minus;</button>
+        <span class="qty" aria-live="polite">${q}</span>
+        <button type="button" data-inc="${id}" aria-label="Increase">+</button>
+      </div>`;
+  }
+
+  function renderControls(){
+    document.querySelectorAll("[data-control]").forEach(el => {
+      el.innerHTML = controlHTML(el.getAttribute("data-control"));
+    });
+  }
+
+  function renderDrawer(){
+    const body = $("drawerBody");
+    const entries = Object.entries(cart);
+    if (!entries.length){
+      body.innerHTML = `<div class="empty-cart">Your order is empty.</div>`;
+    } else {
+      body.innerHTML = entries.map(([id,q]) => {
+        const it = byId[id];
+        return `
+          <div class="line">
+            <span class="l-name">${esc(it.name)}</span>
+            <span class="l-price">${money(it.price*q)}</span>
+            <div class="l-controls">
+              <div class="stepper" role="group" aria-label="Quantity">
+                <button type="button" data-dec="${id}" aria-label="Decrease">&minus;</button>
+                <span class="qty">${q}</span>
+                <button type="button" data-inc="${id}" aria-label="Increase">+</button>
+              </div>
+              <button class="l-remove" type="button" data-remove="${id}">Remove</button>
+            </div>
+          </div>`;
+      }).join("");
+    }
+    $("subtotal").textContent = money(subtotal());
+  }
+
+  function refresh(){
+    const c = count();
+    document.body.classList.toggle("cart-active", c > 0);
+    $("barCount").textContent = c + (c === 1 ? " item" : " items");
+    $("barTotal").textContent = money(subtotal());
+    renderControls();
+    renderDrawer();
+    $("payNotice").classList.remove("show");
+  }
+
+  /* ---------------- Drawer open/close ---------------- */
+  function openCart(){ document.body.classList.add("cart-open"); $("drawer").setAttribute("aria-hidden","false"); $("drawerClose").focus(); }
+  function closeCart(){ document.body.classList.remove("cart-open"); $("drawer").setAttribute("aria-hidden","true"); }
+
+  $("viewOrder").addEventListener("click", openCart);
+  $("drawerClose").addEventListener("click", closeCart);
+  $("overlay").addEventListener("click", closeCart);
+  document.addEventListener("keydown", (e)=>{ if (e.key === "Escape" && document.body.classList.contains("cart-open")) closeCart(); });
+
+  /* ---------------- Payment (intentionally inert) ---------------- */
+  $("payBtn").addEventListener("click", ()=>{
+    // No navigation. A real gateway (Stripe, etc.) is wired in later.
+    $("payNotice").classList.add("show");
+  });
+
+  /* ---------------- Delegated controls ---------------- */
+  document.addEventListener("click", (e)=>{
+    const t = e.target.closest("[data-add],[data-inc],[data-dec],[data-remove]");
+    if (!t) return;
+    if (t.dataset.add)    add(t.dataset.add);
+    else if (t.dataset.inc) add(t.dataset.inc);
+    else if (t.dataset.dec) dec(t.dataset.dec);
+    else if (t.dataset.remove) remove(t.dataset.remove);
+  });
+
+  /* ---------------- Init ---------------- */
+  refresh();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>page.classList.add("revealed")));
+</script>
+</body>
+</html>
