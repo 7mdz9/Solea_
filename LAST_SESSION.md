@@ -31,6 +31,10 @@
 - Step 4 verification note: in-app browser `iab` was unavailable, so Playwright Chromium was installed for local render verification.
 - Step 4 Debug Sweep: clean; files touched: `PROJECT_STATE.md`, `LAST_SESSION.md`, `src/app/globals.css`.
 - Step 4 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run format` exit 0.
+- Verification + State Refresh: confirmed Steps 1-4 are reflected in `PROJECT_STATE.md`; refreshed the key file map and latest verification notes.
+- Verification + State Refresh: confirmed `reference/solea-menu-prototype.html` and `reference/solea-qr-generator-prototype.html` exist; legacy `refrence/` path is absent.
+- Verification + State Refresh: no table logic found in app source/config; no payment SDK, checkout, charge flow, DB, Prisma, or Supabase package installed or referenced in app source/config.
+- Verification + State Refresh DoD: `npm run build` exit 0; `npm run typecheck` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.
