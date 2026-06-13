@@ -35,6 +35,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Brand CSS tokens are stored in `styles/tokens.css` with approved hex tokens preserved verbatim.
 - Tailwind brand colors and font families are mapped in `tailwind.config.ts` and `styles/tokens.css`.
 - Accent discipline: Lemon Rind = admin (QR) screen; Terracotta = menu screen (item numbers + Add to cart).
+- Root layout/global baseline applies Manrope, Porcelain surface, subtle warm background wash, global text rendering, and `prefers-reduced-motion` handling in `src/app/globals.css`.
 - `qrcode` and `jspdf` imports are checked in `src/lib/vendor-smoke.ts`.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
 - Playwright is configured in `playwright.config.ts` with a request-only smoke test in `e2e/home.spec.ts`.

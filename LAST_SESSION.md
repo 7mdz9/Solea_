@@ -26,6 +26,11 @@
 - Step 3 verification fix: restored uppercase/no-space CSS token declarations after Prettier lowercased hex values; ignored `styles/tokens.css` in Prettier.
 - Step 3 Debug Sweep: clean; files touched: `.prettierignore`, `PROJECT_STATE.md`, `LAST_SESSION.md`, `src/app/globals.css`, `src/app/layout.tsx`, `styles/tokens.css`, `tailwind.config.ts`.
 - Step 3 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0.
+- Step 4: applied the root typography baseline, Porcelain surface, subtle warm background wash, text rendering, and `prefers-reduced-motion` handling in `src/app/globals.css`.
+- Step 4 render check: production server returned HTTP 200; Playwright confirmed `rgb(238, 233, 228)` body background, radial warm wash, fixed background attachment, Manrope font stack, and `next/font` variables. The local server was stopped.
+- Step 4 verification note: in-app browser `iab` was unavailable, so Playwright Chromium was installed for local render verification.
+- Step 4 Debug Sweep: clean; files touched: `PROJECT_STATE.md`, `LAST_SESSION.md`, `src/app/globals.css`.
+- Step 4 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run format` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

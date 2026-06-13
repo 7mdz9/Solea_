@@ -16,12 +16,40 @@ body {
   display: flex;
   flex-direction: column;
   font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--olive-deep);
+  background: var(--porcelain);
+  background-image:
+    radial-gradient(
+      130% 70% at 100% 0%,
+      rgba(192, 174, 148, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      120% 70% at 0% 100%,
+      rgba(192, 174, 148, 0.07),
+      transparent 55%
+    );
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
