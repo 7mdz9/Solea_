@@ -95,6 +95,13 @@
 - Step 11 invariant check: `rg -n "checkout|stripe|payment intent|charge\(" src\app` exit 1.
 - Step 11 Debug Sweep: clean; files touched: `types/commerce.ts`, `src/app/api/README.md`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 11 Debug Sweep DoD: `npm run typecheck` exit 0.
+- Verification + State Refresh: confirmed `PROJECT_STATE.md` and `LAST_SESSION.md` are current through Step 11.
+- Verification + State Refresh: no-table grep exit 1 with no matches; no-payment-gateway grep exit 1 with no matches.
+- Verification + State Refresh: production browser check confirmed `/` and `/menu` load without credentials, `/admin/qr` returns 401 without/wrong credentials and 200 with valid Basic Auth, and `/api/orders` remains unimplemented.
+- Verification + State Refresh: cart remains client-side; adding to cart and clicking Pay triggered no unexpected requests, Pay did not navigate, and the inert notice rendered.
+- Verification + State Refresh: accent discipline confirmed; Terracotta is used on menu/cart controls and Lemon Rind on the admin QR tick.
+- Verification + State Refresh: `npm run build` exit 0 after retrying a transient Google font fetch failure; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run format` exit 0.
+- Verification + State Refresh: no drift found; files touched: `PROJECT_STATE.md`, `LAST_SESSION.md`.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.
