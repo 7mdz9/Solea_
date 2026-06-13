@@ -46,11 +46,14 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Client-only cart state is implemented in `lib/use-cart.ts`.
 - Cart UI components are stored in `src/components/cart/`.
 - `/menu` mounts the cart through `src/components/menu/MenuClient.tsx`; Pay is inert and only reveals the online payment coming soon notice.
+- `/menu` renders a branded empty state if the menu source has no items.
 - Admin QR page is implemented at `src/app/admin/qr/page.tsx`; it reads `MENU_URL` server-side and serves the production menu address as read-only.
 - Admin QR components are stored in `src/components/admin/` and generate a single bare QR client-side with `qrcode`.
+- Admin QR URL input is validated outside production and QR/PDF generation failures return quiet feedback.
 - Admin QR export uses `jspdf` to download 12 repeated copies of the single menu QR on one A4 sheet with faint cut guides.
 - Production `/admin/*` routes are protected by Basic Auth middleware using `ADMIN_PASSWORD` from the environment.
 - Public routes `/` and `/menu` remain outside the admin gate.
+- Branded not-found page is implemented at `src/app/not-found.tsx`.
 - Future commerce placeholders are types only in `types/commerce.ts`.
 - `src/app/api/README.md` reserves `/api/orders` and `/api/payments` as unbuilt; no API route handlers are present.
 - Vitest + React Testing Library are configured in `vitest.config.ts` and `vitest.setup.ts`.
@@ -69,9 +72,10 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 9 reflected: `/admin/qr` supports Export PDF and Print for a clean 12-copy QR sheet; `/menu` print hides cart chrome.
 - Step 10 reflected: production `/admin/*` uses a lightweight Basic Auth gate scoped by middleware; public menu routes remain open.
 - Step 11 reflected: future Order, OrderItem, and Payment types exist without logic; the API namespace is reserved by README only.
+- Step 12 reflected: validation and quiet error handling are in place for admin QR, empty menu, empty cart, cart quantity bounds, and not-found.
 
 ## Key File Map
-- App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`, `src/app/admin/qr/page.tsx`, `src/middleware.ts`
+- App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`, `src/app/admin/qr/page.tsx`, `src/app/not-found.tsx`, `src/middleware.ts`
 - Menu components: `src/components/menu/Masthead.tsx`, `src/components/menu/MenuClient.tsx`, `src/components/menu/MenuSection.tsx`, `src/components/menu/MenuItem.tsx`, `src/components/menu/MenuFooter.tsx`, `src/components/menu/money.ts`, `src/components/menu/menu.module.css`
 - Cart components: `src/components/cart/AddToCart.tsx`, `src/components/cart/QtyStepper.tsx`, `src/components/cart/CartBar.tsx`, `src/components/cart/CartDrawer.tsx`, `src/components/cart/PayButton.tsx`, `src/components/cart/cart.module.css`
 - Admin QR components: `src/components/admin/QrStudio.tsx`, `src/components/admin/QrStudioHeader.tsx`, `src/components/admin/QrControls.tsx`, `src/components/admin/QrCard.tsx`, `src/components/admin/QrActions.tsx`, `src/components/admin/useQrCodes.ts`, `src/components/admin/admin-qr.module.css`
@@ -85,7 +89,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Bridge state: `PROJECT_STATE.md`, `LAST_SESSION.md`
 
 ## Latest Verification
-- Steps 1-11 are reflected in this file.
+- Steps 1-12 are reflected in this file.
 - No table logic found in app source/config: no table IDs, table routes, `?table=` query parameter, Table data model, or per-table QR logic.
 - No payment SDK, payment route, checkout/charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
 - Verification + State Refresh: current no-table grep exit 1 with no matches; current no-payment-gateway grep exit 1 with no matches.
@@ -95,6 +99,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 9 browser verification: Export PDF downloads `solea-qr-codes.pdf` containing repeated QR copies; admin print media hides chrome and shows 12 clean QR cells; menu print media hides the cart bar, drawer, and overlay.
 - Step 10 browser verification: production `/` and `/menu` load without credentials; `/admin/qr` returns 401 without credentials or with a wrong password; `/admin/qr` loads with valid Basic Auth credentials.
 - Step 11 verification: `types/commerce.ts` typechecks; production `/api/orders` and `/api/payments` return 404; no API route handlers were added.
+- Step 12 verification: non-production admin QR rejects invalid URLs with in-voice feedback; empty menu and empty cart states render without crashing; cart quantities do not go negative; branded not-found page renders.
 - Verification + State Refresh: production browser check confirmed `/` and `/menu` are public, `/admin/qr` is gated, `/api/orders` is not reachable as an implemented API route, cart interactions do not trigger unexpected requests, and Pay is inert.
 - Verification + State Refresh: accent discipline confirmed; Terracotta appears on menu/cart controls and Lemon Rind appears on the admin QR tick.
 - `npm run build` exit 0, `npm run typecheck` exit 0, and `npm run lint` exit 0.
@@ -103,6 +108,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 8 invariant scan: `rg -n "table|\?table|Table|stripe|/api/payments|charge\(" src\app src\components lib data types` exit 1 with no matches.
 - Step 10 env grep: `rg -n "ADMIN_PASSWORD" src\app src\components lib` exit 1 with no matches; `src/middleware.ts` reads `process.env.ADMIN_PASSWORD`.
 - Step 11 grep: `rg -n "checkout|stripe|payment intent|charge\(" src\app` exit 1 with no matches.
+- Step 12 tests: `npm test` exit 0 with cart edge-case and empty-menu coverage.
 
 ## Spec Compliance
 - menu page -> implemented
@@ -110,6 +116,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - admin QR page -> implemented; single bare QR encodes `MENU_URL` and no table logic is present.
 - QR admin + export -> implemented; export/print repeat the single bare menu QR with no labels or URLs on codes.
 - admin access gate -> implemented; production `/admin/*` is protected by Basic Auth and public menu routes are not blocked.
+- validation + error handling -> implemented; invalid admin URL, empty menu, empty cart, cart quantity bounds, and not-found are covered.
 
 ## Stubs/Mocks
 - future commerce types, not implemented: `Order`, `OrderItem`, and `Payment` in `types/commerce.ts`.

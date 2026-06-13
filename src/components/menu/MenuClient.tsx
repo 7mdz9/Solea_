@@ -22,6 +22,9 @@ function pad(value: number) {
 export function MenuClient({ menu }: MenuClientProps) {
   const cart = useCart(menu);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const hasMenuItems = menu.categories.some(
+    (category) => category.items.length > 0,
+  );
 
   return (
     <>
@@ -33,21 +36,28 @@ export function MenuClient({ menu }: MenuClientProps) {
           tagline={menu.tagline}
           title={menu.title}
         />
-        {menu.categories.map((category, index) => (
-          <MenuSection
-            category={category}
-            key={category.id}
-            number={pad(index + 1)}
-            renderControl={(item) => (
-              <AddToCart
-                onAdd={() => cart.add(item.id)}
-                onDecrease={() => cart.decrement(item.id)}
-                onIncrease={() => cart.add(item.id)}
-                quantity={cart.quantityOf(item.id)}
-              />
-            )}
-          />
-        ))}
+        {hasMenuItems ? (
+          menu.categories.map((category, index) => (
+            <MenuSection
+              category={category}
+              key={category.id}
+              number={pad(index + 1)}
+              renderControl={(item) => (
+                <AddToCart
+                  onAdd={() => cart.add(item.id)}
+                  onDecrease={() => cart.decrement(item.id)}
+                  onIncrease={() => cart.add(item.id)}
+                  quantity={cart.quantityOf(item.id)}
+                />
+              )}
+            />
+          ))
+        ) : (
+          <section className={styles.emptyState} aria-live="polite">
+            <h2>The menu is resting for now.</h2>
+            <p>Please check back shortly.</p>
+          </section>
+        )}
         <MenuFooter footer={menu.footer} />
       </main>
       {cart.count > 0 ? (

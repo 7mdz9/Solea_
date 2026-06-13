@@ -175,6 +175,39 @@
   color: var(--stone-moss);
 }
 
+.emptyState {
+  margin-top: clamp(48px, 6vw, 72px);
+  border: 1px dashed rgba(74, 67, 56, 0.18);
+  border-radius: 14px;
+  padding: clamp(42px, 7vw, 64px) 24px;
+  text-align: center;
+  color: var(--earth);
+  background: var(--porcelain-soft);
+}
+
+.emptyState h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(24px, 4vw, 34px);
+  color: var(--olive);
+  margin: 0 0 8px;
+}
+
+.emptyState p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.returnLink {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--terracotta);
+}
+
 .reveal {
   animation: reveal 0.7s ease both;
 }

@@ -21,6 +21,10 @@ export function useCart(menu: Menu) {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
   const add = (id: string) => {
+    if (!itemById.has(id)) {
+      return;
+    }
+
     setQuantities((current) => ({
       ...current,
       [id]: (current[id] ?? 0) + 1,

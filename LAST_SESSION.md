@@ -102,6 +102,15 @@
 - Verification + State Refresh: accent discipline confirmed; Terracotta is used on menu/cart controls and Lemon Rind on the admin QR tick.
 - Verification + State Refresh: `npm run build` exit 0 after retrying a transient Google font fetch failure; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run format` exit 0.
 - Verification + State Refresh: no drift found; files touched: `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 12: added quiet admin QR error handling for invalid URLs and generation/export failures.
+- Step 12: added a branded empty menu state and a branded not-found page.
+- Step 12: hardened client cart edge behavior by ignoring unknown item ids and keeping quantities from going negative.
+- Step 12: added tests for cart subtotal/negative quantity behavior and empty menu rendering.
+- Step 12 browser check: non-production `/admin/qr` rejected `not-a-url` with `Use a full menu address, including https://.` and did not render a QR; `/does-not-exist` returned the branded 404.
+- Step 12 verification: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0; `npm run format` exit 0.
+- Step 12 invariant checks: no table logic and no payment SDK/route/charge source matches.
+- Step 12 Debug Sweep: clean; files touched: `src/components/admin/useQrCodes.ts`, `lib/use-cart.ts`, `src/components/menu/MenuClient.tsx`, `src/components/menu/menu.module.css`, `src/app/not-found.tsx`, `lib/use-cart.test.tsx`, `src/components/menu/MenuClient.test.tsx`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 12 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

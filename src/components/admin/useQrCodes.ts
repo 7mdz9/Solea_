@@ -45,17 +45,24 @@ export function useQrCodes(initialMenuUrl: string) {
     }
 
     if (!isValidUrl(value)) {
-      setFeedback("Enter a valid menu address.");
+      setFeedback("Use a full menu address, including https://.");
       setIsError(true);
       return;
     }
 
     const normalizedUrl = value.replace(/\/+$/, "");
-    const dataUrl = await QRCode.toDataURL(normalizedUrl, qrOptions);
-    setQrDataUrl(dataUrl);
-    setEncodedUrl(normalizedUrl);
-    setFeedback("Added the menu code.");
-    setIsError(false);
+    try {
+      const dataUrl = await QRCode.toDataURL(normalizedUrl, qrOptions);
+      setQrDataUrl(dataUrl);
+      setEncodedUrl(normalizedUrl);
+      setFeedback("Added the menu code.");
+      setIsError(false);
+    } catch {
+      setFeedback(
+        "The code couldn’t be generated just now. Check the menu address and try again.",
+      );
+      setIsError(true);
+    }
   };
 
   const clear = () => {
@@ -77,7 +84,16 @@ export function useQrCodes(initialMenuUrl: string) {
       format: "a4",
       orientation: "portrait",
     });
-    const dataUrl = await QRCode.toDataURL(encodedUrl, pdfQrOptions);
+    let dataUrl: string;
+    try {
+      dataUrl = await QRCode.toDataURL(encodedUrl, pdfQrOptions);
+    } catch {
+      setFeedback(
+        "The PDF couldn’t be prepared just now. Try again in a moment.",
+      );
+      setIsError(true);
+      return;
+    }
     const pageWidth = 210;
     const pageHeight = 297;
     const margin = 16;
