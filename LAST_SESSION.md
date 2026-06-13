@@ -127,6 +127,11 @@
 - Step 14 invariant checks: no table logic found; no payment gateway, Stripe, payment intent, executable checkout route, charge flow, or payment SDK code found.
 - Step 14 Debug Sweep: clean; files touched: `.env.example`, `next.config.ts`, `playwright.config.ts`, `e2e/solea.spec.ts`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
 - Step 14 Debug Sweep DoD: `npm run build` exit 0; `npm run typecheck` exit 0; `npm run lint` exit 0; `npm test` exit 0.
+- Step 15: replaced the default Next.js README with deployment and domain handoff documentation.
+- Step 15: README now documents build/start commands, required environment variables, Vercel deployment, apex `soleauae.com` domain connection, the existing-site branch, the menu-edits-need-a-developer note, and the QR to menu verification checklist.
+- Step 15 verification: `npm run build` exit 0.
+- Step 15 Debug Sweep: fixed README formatting; files touched: `README.md`, `PROJECT_STATE.md`, `LAST_SESSION.md`.
+- Step 15 Debug Sweep DoD: `npm run build` exit 0; `npm run format` exit 0.
 
 ## Pending
 - Add the Project Specification Plan to the repo when available.

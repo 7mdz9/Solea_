@@ -60,6 +60,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Playwright is configured in `playwright.config.ts` and runs production-mode E2E coverage in `e2e/solea.spec.ts`.
 - Production hardening is configured in `next.config.ts` with baseline security headers.
 - `.env.example` documents `MENU_URL`, `ADMIN_PASSWORD`, and `NODE_ENV` placeholders only.
+- Deployment and domain handoff documentation is stored in `README.md`.
 - Prettier is configured with `.prettierrc.json`; verbatim reference HTML, token CSS, bridge state files, and generated test output are ignored by `.prettierignore`.
 
 ## Step Completion Snapshot
@@ -77,6 +78,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 12 reflected: validation and quiet error handling are in place for admin QR, empty menu, empty cart, cart quantity bounds, and not-found.
 - Step 13 reflected: automated unit, component, and E2E tests cover menu data, cart logic, menu/cart/admin components, inert Pay behavior, public routing, admin gate, and QR PDF export.
 - Step 14 reflected: production env documentation, baseline security headers, production read-only `MENU_URL` QR behavior, and non-hardcoded E2E admin password handling are in place.
+- Step 15 reflected: README deployment and domain handoff docs cover build/start, env vars, Vercel deploy, apex domain connection, existing-site branch, menu edits, and QR to menu verification.
 
 ## Key File Map
 - App routes: `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/menu/page.tsx`, `src/app/admin/qr/page.tsx`, `src/app/not-found.tsx`, `src/middleware.ts`
@@ -88,12 +90,13 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Menu source: `types/menu.ts`, `types/commerce.ts`, `data/menu.ts`, `lib/menu-repository.ts`, `lib/use-cart.ts`
 - Reserved API namespace: `src/app/api/README.md`
 - Tooling config: `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `eslint.config.mjs`, `vitest.config.ts`, `vitest.setup.ts`, `playwright.config.ts`, `.prettierrc.json`, `.prettierignore`, `.env.example`
+- Deployment docs: `README.md`
 - Tests and probes: `src/app/page.test.tsx`, `src/lib/vendor-smoke.ts`, `lib/menu-repository.test.ts`, `lib/use-cart.test.tsx`, `src/components/menu/MenuClient.test.tsx`, `src/components/menu/MenuItem.test.tsx`, `src/components/cart/AddToCart.test.tsx`, `src/components/cart/CartDrawer.test.tsx`, `src/components/cart/PayButton.test.tsx`, `src/components/admin/QrStudio.test.tsx`, `e2e/solea.spec.ts`
 - Approved prototypes: `reference/solea-menu-prototype.html`, `reference/solea-qr-generator-prototype.html`
 - Bridge state: `PROJECT_STATE.md`, `LAST_SESSION.md`
 
 ## Latest Verification
-- Steps 1-13 are reflected in this file.
+- Steps 1-15 are reflected in this file.
 - No table logic found in app source/config: no table IDs, table routes, `?table=` query parameter, Table data model, or per-table QR logic.
 - No payment SDK, payment route, checkout/charge flow, DB, Prisma, or Supabase package is installed or referenced in app source/config.
 - Verification + State Refresh: current no-table grep exit 1 with no matches; current no-payment-gateway grep exit 1 with no matches.
@@ -121,6 +124,8 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - Step 14 hardening checks: `.env.example` documents `MENU_URL`, `ADMIN_PASSWORD`, and `NODE_ENV`; no hardcoded secret value was added; Playwright E2E now generates a test-only admin password when one is not supplied.
 - Step 14 invariant checks: no-table grep exit 1 with no matches; no-payment-gateway grep only found the existing inert Pay notice copy in tests, with no gateway, Stripe, checkout route, charge flow, or payment SDK code.
 - Step 14 E2E regression: `npm run test:e2e` exit 0.
+- Step 15 README verification: build/start, env-var table, Vercel deploy steps, apex `soleauae.com` domain connection, existing-site branch, menu-edits-need-a-developer note, and QR to menu checklist are documented.
+- Step 15 Debug Sweep DoD: `npm run build` exit 0.
 
 ## Spec Compliance
 - menu page -> implemented
@@ -131,6 +136,7 @@ OUTPUT: update LAST_SESSION.md (sweep result: clean | fixed [what] | escalated; 
 - validation + error handling -> implemented; invalid admin URL, empty menu, empty cart, cart quantity bounds, and not-found are covered.
 - testing -> implemented; unit, component, and E2E coverage is in place and green.
 - production hardening -> implemented; env documentation, baseline security headers, production read-only `MENU_URL` QR encoding, and no hardcoded secret are verified.
+- deployment docs -> implemented; README covers deployment, domain handoff, existing-site branch, and QR to menu verification.
 
 ## Stubs/Mocks
 - future commerce types, not implemented: `Order`, `OrderItem`, and `Payment` in `types/commerce.ts`.
